@@ -1,6 +1,6 @@
 <!-- modulatte.partials.builder.container.list -->
 @php
-    use mmaurice\modulatte\Support\core\Helpers\ModuleHelper;
+    use mmaurice\modulatte\Support\Helpers\ModuleHelper;
     use mmaurice\modulatte\Support\Components\ActionElement;
 @endphp
 
