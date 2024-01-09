@@ -183,6 +183,7 @@ trait ModuleExtensionTrait
                 'name' => $name,
                 'title' => (collect($this->fieldsNames())->has($name) ? collect($this->fieldsNames())->get($name) : $name),
                 'value' => ($this->$name ? $this->$name : ''),
+                'class' => (collect($this->itemFieldsClasses())->has($name) ? collect($this->itemFieldsClasses())->get($name) : ''),
                 'comment' => '',
             ],
         ]);
