@@ -5,6 +5,7 @@
     $value = (isset($value) ? $value : '');
     $comment = (isset($comment) ? $comment : '');
     $list = (isset($list) ? $list : collect([]));
+    $class = (isset($class) ? $class : " {$class}");
 @endphp
 
 <tr>
@@ -12,7 +13,7 @@
 
     <td data-type="text">
         <div class="clearfix">
-            <select class="form-control" name="{{ $name }}" size="1"{!! ($required ? ' required' : '') !!}>
+            <select class="form-control{{ $class }}" name="{{ $name }}" size="1"{!! ($required ? ' required' : '') !!}>
                 @if ($noValue)
                     <option>Нет</option>
                 @endif

@@ -110,3 +110,16 @@ td.description {
     display: block;
     overflow: hidden;
 }
+
+.form-control.size-s {
+    width: 25% !important;
+}
+.form-control.size-m {
+    width: 50% !important;
+}
+.form-control.size-l {
+    width: 75% !important;
+}
+.form-control.size-xl {
+    width: 100% !important;
+}
