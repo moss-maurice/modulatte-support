@@ -5,7 +5,7 @@
     $rows = (isset($rows) ? $rows : 5);
     $value = (isset($value) ? $value : '');
     $comment = (isset($comment) ? $comment : '');
-    $class = (isset($class) ? $class : " {$class}");
+    $class = (isset($class) ? " {$class}" : '');
 @endphp
 
 <tr>

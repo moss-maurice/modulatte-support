@@ -3,7 +3,7 @@
     $placeholder = (isset($placeholder) ? $placeholder : 'dd-mm-YYYY HH:MM:SS');
     $value = (isset($value) ? $value : '');
     $comment = (isset($comment) ? $comment : '');
-    $class = (isset($class) ? $class : " {$class}");
+    $class = (isset($class) ? " {$class}" : '');
 @endphp
 
 <tr>

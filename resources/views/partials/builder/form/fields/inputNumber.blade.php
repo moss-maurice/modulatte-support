@@ -5,7 +5,7 @@
     $comment = (isset($comment) ? $comment : '');
     $min = (isset($min) ? $min : '');
     $max = (isset($max) ? $max : '');
-    $class = (isset($class) ? $class : " {$class}");
+    $class = (isset($class) ? " {$class}" : '');
 @endphp
 
 <tr>

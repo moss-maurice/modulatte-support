@@ -5,7 +5,7 @@
     $value = (isset($value) ? $value : '');
     $comment = (isset($comment) ? $comment : '');
     $list = (isset($list) ? $list : collect([]));
-    $class = (isset($class) ? $class : " {$class}");
+    $class = (isset($class) ? " {$class}" : '');
 @endphp
 
 <tr>
