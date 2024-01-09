@@ -1,0 +1,26 @@
+{
+    "name": "mmaurice/modulatte-support",
+    "description": "Module generator support for Modx Evolution 3.x",
+    "license": "GPL-3.0-only",
+    "type": "library",
+    "authors": [
+        {
+            "name": "Moss Maurice",
+            "email": "kreexus@yandex.ru"
+        }
+    ],
+    "require": {
+        "php": ">=7.3"
+    },
+    "require_dev": {},
+    "optimize-autoloader": true,
+    "autoload": {
+        "psr-4": {
+            "mmaurice\\modulatte\\Support\\": "src"
+        }
+    },
+    "config": {
+        "vendor-dir": "vendor"
+    },
+    "extra": {}
+}

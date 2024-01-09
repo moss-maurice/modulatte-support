@@ -1,0 +1,112 @@
+.pagination .page-item {
+    display: inline-flex;
+    margin: 5px;
+    padding: 5px 5px;
+    cursor: pointer;
+    text-transform: uppercase;
+    font-size: 0.8125rem;
+    text-decoration: none;
+    color: #292b2c;
+}
+
+.pagination .page-item.first:hover,
+.pagination .page-item.last:hover,
+.pagination .page-item.num:hover:not(.active) {
+    background-color: #efefef;
+    color: #292b2c;
+}
+
+.pagination .page-item.active {
+    background: #202329;
+    color: #ffffff;
+    font-weight: bold;
+    cursor: default;
+}
+
+.pagination .page-item.dots {
+    cursor: default;
+}
+
+.pagination .pagination span {
+    margin: 5px;
+    cursor: default;
+}
+
+.pagination .active {
+}
+
+.pagination .btn {
+    cursor: pointer;
+    text-transform: uppercase;
+    font-size: 0.8125rem;
+    text-decoration: none;
+}
+
+.tails .stat-item .stat-item-block {
+    background-color: #ffffff;
+    font-weight: bold;
+    min-height: 120px;
+    border: 1px solid #d4d4d4;
+    padding: 20px;
+}
+
+.tails .stat-item .stat-item-block .title {
+    font-size: 16px;
+}
+
+.tails .stat-item .stat-item-block .value {
+    font-size: 28px;
+}
+
+.tails .stat-item .stat-item-block .value.humans::after {
+    content: "чел.";
+}
+
+.tails .stat-item .stat-item-block .value.pcs::after {
+    content: "шт.";
+}
+
+.tails .stat-item .stat-item-block .value.money::after {
+    content: "руб.";
+}
+
+.tails .stat-item .stat-item-block .value::after {
+    font-size: 14px;
+    padding-left: 10px;
+}
+
+.table.data .tableHeader {
+    font-weight: bold;
+}
+/*.table.data .tableHeader.master,
+.table.data .tableItem.master {
+  width: 100%;
+}*/
+.table.data .tableHeader.short,
+.table.data .tableItem.short {
+    width: 1%;
+}
+.table.data .tableItem.fw-bolder {
+    font-weight: bold;
+}
+.table.data .tableHeader.id,
+.table.data .tableItem.id {
+    width: 1%;
+    min-width: 60px;
+    max-width: 60px;
+    text-align: right;
+}
+.table.data .tableHeader.controls,
+.table.data .tableItem.controls {
+    width: 220px;
+    min-width: 220px;
+    max-width: 220px;
+    text-align: right;
+}
+
+/*custom*/
+td.description {
+    max-height: 80px;
+    display: block;
+    overflow: hidden;
+}
