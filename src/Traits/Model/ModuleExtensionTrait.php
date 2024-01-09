@@ -2,8 +2,8 @@
 
 namespace mmaurice\modulatte\Support\Traits\Model;
 
-use EvolutionCMS\Main\Components\Modules\Helpers\ModuleHelper;
 use Illuminate\Http\Request;
+use mmaurice\modulatte\Support\Helpers\ModuleHelper;
 
 trait ModuleExtensionTrait
 {
@@ -120,7 +120,7 @@ trait ModuleExtensionTrait
             $method = "{$matches[1]}{$matches[3]}";
 
             if (method_exists($this, $method)) {
-                return call_user_func_array([$this, $method], [ModuleHelper::camelCaseToUnderScore($matches[2])]);
+                return call_user_func_array([$this, $method], [$matches[2]]);
             }
         }
 
@@ -129,6 +129,8 @@ trait ModuleExtensionTrait
 
     public function getListHeadField($name)
     {
+        $name = ModuleHelper::camelCaseToUnderScore($name);
+
         $methodName = 'get' . ucfirst($name) . 'ListHeadField';
 
         if (method_exists($this, $methodName)) {
@@ -147,7 +149,9 @@ trait ModuleExtensionTrait
 
     public function getListField($name)
     {
-        $methodName = 'get' . ucfirst($name) . 'ListField';
+        $name = ModuleHelper::camelCaseToUnderScore($name);
+
+        $methodName = 'get' . ModuleHelper::underScoreToCamelCase($name, true) . 'ListField';
 
         if (method_exists($this, $methodName)) {
             return call_user_func([$this, $methodName]);
@@ -165,7 +169,9 @@ trait ModuleExtensionTrait
 
     public function getEditorField($name)
     {
-        $methodName = 'get' . ucfirst($name) . 'EditorField';
+        $name = ModuleHelper::camelCaseToUnderScore($name);
+
+        $methodName = 'get' . ModuleHelper::underScoreToCamelCase($name, true) . 'EditorField';
 
         if (method_exists($this, $methodName)) {
             return call_user_func([$this, $methodName]);
@@ -184,7 +190,7 @@ trait ModuleExtensionTrait
 
     public function getFilterField($name)
     {
-        $methodName = 'get' . ucfirst($name) . 'FilterField';
+        $methodName = 'get' . ModuleHelper::underScoreToCamelCase($name, true) . 'FilterField';
 
         if (method_exists($this, $methodName)) {
             return call_user_func([$this, $methodName]);

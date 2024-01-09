@@ -45,6 +45,8 @@ class ModuleHelper
 
     public static function camelCaseToUnderScore($string)
     {
-        return strtolower(preg_replace('/(?<!^)[A-Z]/', '_$0', $string));
+        return strtolower(preg_replace_callback('/([A-Z][A-Za-z0-9]+)/', function ($matches) {
+            return '_' . strtolower($matches[1]);
+        }, $string));
     }
 }
