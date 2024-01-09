@@ -6,7 +6,7 @@
 @endphp
 
 <tr>
-    @include("{$namespace}::modulatte.partials.builder.form.fieldName")
+    @include("{$namespace}::partials.builder.form.fieldName")
 
     <td>
         <input type="date" name="{{ $name }}" id="date-from" class="form-control DatePicker unstyled date-datepicker date-from-datepicker" value="{{ $value }}" placeholder="{{ $placeholder }}" autocomplete="off" />

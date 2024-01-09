@@ -8,7 +8,7 @@
 
 <tr>
     <tr>
-        @include("{$namespace}::modulatte.partials.builder.form.fieldName")
+        @include("{$namespace}::partials.builder.form.fieldName")
 
         <td data-type="text">
             <strong>{{ FormatsHelper::timestampToDateConvert($value, 'd.m.Y, H:i') }}</strong>

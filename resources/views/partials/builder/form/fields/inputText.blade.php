@@ -6,7 +6,7 @@
 @endphp
 
 <tr>
-    @include("{$namespace}::modulatte.partials.builder.form.fieldName")
+    @include("{$namespace}::partials.builder.form.fieldName")
 
     <td data-type="text">
         <input type="text" name="{{ $name }}" value="{{ $value }}"{!! ($required ? ' required' : '') !!} />

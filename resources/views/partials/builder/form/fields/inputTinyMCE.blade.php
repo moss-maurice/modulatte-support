@@ -8,7 +8,7 @@
 @endphp
 
 <tr>
-    @include("{$namespace}::modulatte.partials.builder.form.fieldName")
+    @include("{$namespace}::partials.builder.form.fieldName")
 
     <td data-type="text">
         <textarea id="tinyMCE" class="form-control" name="{{$name}}" cols="{{ $cols }}" rows="{{ $rows }}" wrap="soft" aria-hidden="true">{{ $value }}</textarea>

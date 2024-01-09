@@ -8,7 +8,7 @@
 @endphp
 
 <tr>
-    @include("{$namespace}::modulatte.partials.builder.form.fieldName")
+    @include("{$namespace}::partials.builder.form.fieldName")
 
     <td data-type="textareamini">
         <textarea name="{{ $name }}" cols="{{ $cols }}" rows="{{ $rows }}"{!! ($required ? ' required' : '') !!}>{{ $value }}</textarea>
