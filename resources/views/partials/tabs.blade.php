@@ -25,7 +25,7 @@
 <script type="text/javascript">
     jQuery(document).ready(function() {
         jQuery(document).find('h2').filter('.tab ').each(function() {
-            var dataTarget = '#tab_{{ $tab->slug() }}';
+            var dataTarget = '#tab_{{ $module->tab()->slug() }}';
             var currentDataTarget = jQuery(this).attr('data-target');
 
             if (currentDataTarget === dataTarget) {
