@@ -8,7 +8,7 @@ use mmaurice\modulatte\Support\Components\ActionElement;
 use mmaurice\modulatte\Support\Helpers\ModuleHelper;
 use mmaurice\modulatte\Support\Module;
 
-abstract class Controller
+class Controller
 {
     const MESSAGE_PRIMARY = 'primary';
     const MESSAGE_SECONDARY = 'secondary';
@@ -140,8 +140,8 @@ abstract class Controller
 
         $templateName = str_replace('.', '/', $tabResource->get('template'));
 
-        if ($this->module->path("resources/views/tabs/{$this->slug()}/{$templateName}.blade.php")) {
-            $blade = "tabs.{$this->slug()}.{$tabResource->get('template')}";
+        if ($this->module->path("resources/views/{$this->module->slug()}/{$this->slug()}/{$templateName}.blade.php")) {
+            $blade = $tabResource->get('template');
         }
 
         $data = array_merge($tabResource->get('data', []), [

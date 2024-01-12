@@ -7,44 +7,32 @@ use Illuminate\Support\Facades\View;
 use ReflectionClass;
 use mmaurice\modulatte\Support\Controllers\Controller;
 
-abstract class Module
+abstract class Module implements \mmaurice\modulatte\Support\Interfaces\ModuleInterface
 {
-    protected $config;
     protected $request;
 
-    public function __construct(array $config = [])
+    public function __construct()
     {
-        $this->config = collect($config);
         $this->request = Request::capture();
-
-        $this->import('src/Controllers', '*Controller.php');
-        $this->import('src/Models', '*.php');
-
-        $this->navigate();
     }
 
     public function slug()
     {
-        if (preg_match("/^([^\\\\\\/]+)[\\\\\\/]+/imu", get_called_class(), $matches)) {
-            return $matches[1];
+        if (preg_match("/[\\\\\\/]+([^\\\\\\/]+)[\\\\\\/]+Module$/imu", get_called_class(), $matches)) {
+            return lcfirst($matches[1]);
         }
 
         return null;
     }
 
-    public function name()
-    {
-        return $this->config->has('name') ? $this->config->get('name') : $this->slug();
-    }
-
-    public function icon()
-    {
-        return $this->config->has('icon') ? $this->config->get('icon') : 'fa-cube';
-    }
-
     public function id()
     {
         return md5($this->name());
+    }
+
+    public function position()
+    {
+        return 9999;
     }
 
     public function request()
@@ -66,7 +54,7 @@ abstract class Module
     {
         $reflector = new ReflectionClass($this);
 
-        $modulePath = realpath(dirname($reflector->getFileName()) . '/../');
+        $modulePath = realpath(dirname($reflector->getFileName()) . '/../../');
 
         return realpath("{$modulePath}/{$path}");
     }
@@ -102,13 +90,13 @@ abstract class Module
 
     public function tabs()
     {
-        return $this->search('src/Controllers', '*Controller.php')
+        return $this->search('modules/' . ucfirst($this->slug()) . '/Controllers', '*Controller.php')
             ->map(function ($item) {
                 if (preg_match("/[\\\\\\/]+([^\\\\\\/]+)Controller\\.php$/imu", $item, $matches)) {
                     $tabName = lcfirst($matches[1]);
 
-                    if ($controllerPath = $this->path('src/Controllers/' . ucfirst($tabName) . 'Controller.php')) {
-                        $className = "\\" . $this->slug() . "\\Controllers\\" . ucfirst($tabName) . "Controller";
+                    if ($controllerPath = $this->path('modules/' . ucfirst($this->slug()) . '/Controllers/' . ucfirst($tabName) . 'Controller.php')) {
+                        $className = "\\Modulatte\\Module\\" . ucfirst($this->slug()) . "\\Controllers\\" . ucfirst($tabName) . "Controller";
 
                         $controller = new $className($this);
 
@@ -149,14 +137,6 @@ abstract class Module
         return null;
     }
 
-    protected function import($path, $mask)
-    {
-        return $this->search($path, $mask)
-            ->each(function ($file) {
-                require_once realpath($file);
-            });
-    }
-
     protected function search($path, $mask)
     {
         $path = $this->path($path);
@@ -167,23 +147,8 @@ abstract class Module
             ->map(function ($file) {
                 return realpath($file);
             })
-            ->filter(function ($file) {
-                return realpath($file) ? true : false;
-            });
-    }
-
-    protected function navigate()
-    {
-        if ($this->request()->input('id') === $this->id()) {
-            $this->render('main', [
-                /*'path' => ModuleHelper::makeUrl(collect($this->request()->all())
-                    ->merge([
-                        'tab' => $this->tabName(),
-                        'method' => $this->methodName(),
-                    ])
-                    ->filter()
-                    ->toArray()),*/]);
-        }
+            ->filter()
+            ->values();
     }
 
     protected function render($template, array $properties = [])
@@ -211,7 +176,7 @@ abstract class Module
         $data = !is_array($data) ? [] : $data;
 
         View::addNamespace('modulatte', $this->sourcePath('resources/views'));
-        View::addNamespace($this->slug(), $this->path('resources/views'));
+        View::addNamespace($this->slug(), $this->path("resources/views/{$this->slug()}/{$this->tab()->slug()}"));
 
         if (View::exists("{$this->slug()}::{$template}")) {
             return View::make("{$this->slug()}::{$template}", array_merge($data, [
@@ -228,5 +193,22 @@ abstract class Module
         return View::make("modulatte::notfound", array_merge($data, [
             'namespace' => 'modulatte',
         ]));
+    }
+
+    public function catch()
+    {
+        if ($this->request->input('id') === $this->id()) {
+            $this->render('main', [
+                /*'path' => ModuleHelper::makeUrl(collect($this->request()->all())
+                    ->merge([
+                        'tab' => $this->tabName(),
+                        'method' => $this->methodName(),
+                    ])
+                    ->filter()
+                    ->toArray()),*/]);
+            return true;
+        }
+
+        return false;
     }
 }

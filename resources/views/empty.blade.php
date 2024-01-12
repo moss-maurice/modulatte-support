@@ -1,6 +1,6 @@
 <!-- modulatte.main -->
 @extends ("{$namespace}::layouts.facade", [
-    'partial' => 'tabs',
+    'partial' => 'simpleTab',
 ])
 
 @section ('actions')
