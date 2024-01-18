@@ -11,7 +11,7 @@
 <div class="px-2{{ $class }}">
     <label for="{{ $name }}">{{ $title }}</label>
     <br />
-    <select class="form-control form-control-sm" id="{{ $name }}" name="{{ $name }}" size="1" style="width: 100% !important;">
+    <select name="filter[{{ $name }}]" class="form-control form-control-sm" id="{{ $name }}" size="1" style="width: 100% !important;">
         @if ($noValue)
             <option value="">{{ $noValueCaption }}</option>
         @endif

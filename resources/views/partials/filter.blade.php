@@ -2,11 +2,6 @@
 @if ($fields and $fields->isNotEmpty())
     <div class="actions pb-3">
         <div class="input-group input-group-sm">
-            @include ("{$namespace}::partials.builder.filter.fields.inputHidden", [
-                'name' => 'method',
-                'value' => 'list',
-            ])
-
             @foreach ($fields as $field)
                 @include ("{$namespace}::partials.builder.filter.item", $module->tab()->model()->getFilterField($field))
             @endforeach

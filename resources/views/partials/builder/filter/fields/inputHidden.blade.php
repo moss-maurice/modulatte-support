@@ -4,5 +4,5 @@
     $value = (isset($value) ? $value : '');
 @endphp
 
-<input type="hidden" class="form-control form-control-sm" id="{{ $name }}" name="{{ $name }}" value="{{ $value }}" />
+<input type="hidden" name="filter[{{ $name }}]" class="form-control form-control-sm" id="{{ $name }}" value="{{ $value }}" />
 <!-- / modulatte.partials.builder.filter.fields.inputHidden -->

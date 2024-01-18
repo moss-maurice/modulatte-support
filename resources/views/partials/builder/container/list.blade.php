@@ -17,12 +17,6 @@
                 @endif
 
                 <tr>
-                    @include ("{$namespace}::partials.builder.table.fields.head", [
-                        'name' => 'id',
-                        'title' => '#',
-                        'class' => 'id text-right',
-                    ])
-
                     @if ($fields and $fields->isNotEmpty())
                         @foreach ($fields as $field)
                             @include ("{$namespace}::partials.builder.table.item", $module->tab()->model()->getListHeadField($field))
@@ -39,12 +33,6 @@
             <tbody>
                 @foreach ($list as $item)
                     <tr>
-                        @include ("{$namespace}::partials.builder.table.fields.body", [
-                            'name' => 'id',
-                            'value' => "{$item->id}.",
-                            'class' => 'id text-right',
-                        ])
-
                         @if ($fields and $fields->isNotEmpty())
                             @foreach ($fields as $field)
                                 @include ("{$namespace}::partials.builder.table.item", $item->getListField($field))

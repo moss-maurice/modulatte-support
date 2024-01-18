@@ -27,6 +27,11 @@ trait ModuleExtensionTrait
         return [];
     }
 
+    public function orderFields()
+    {
+        return [];
+    }
+
     public function listFieldsClasses()
     {
         return [];
@@ -62,7 +67,7 @@ trait ModuleExtensionTrait
                     $query = call_user_func_array($callback, [$query]);
                 } else {
                     $field = Request::capture()
-                        ->input($item);
+                        ->input("filter.{$item}");
 
                     $query->when(!is_null($field) and !empty($field), function ($query) use ($item, $field) {
                         $query->where($item, $field);
@@ -73,30 +78,19 @@ trait ModuleExtensionTrait
         return $query;
     }
 
-    public function mappedListFields()
+    public function scopeOrdered($query)
     {
-        return collect($this->listFields())->map(function ($name) {
-            return $this->mappedField($name);
-        });
-    }
+        $orders = $this->mappedOrderFields();
 
-    public function mappedEditorFields()
-    {
-        return collect($this->itemFields())->map(function ($name) {
-            return $this->mappedField($name);
-        });
-    }
+        if ($orders->isNotEmpty()) {
+            $orders->each(function ($item, $key) use (&$query) {
+                if (in_array($item, ['asc', 'desc'])) {
+                    $query->orderBy($this->unmappedField($key), $item);
+                }
+            });
+        }
 
-    public function mappedFilterFields()
-    {
-        return collect($this->filterFields())->map(function ($name) {
-            return $this->mappedField($name);
-        });
-    }
-
-    public function mappedField($name)
-    {
-        return ModuleHelper::underScoreToCamelCase($name);
+        return $query;
     }
 
     protected function registered()
@@ -141,8 +135,22 @@ trait ModuleExtensionTrait
             'template' => 'partials.builder.table.fields.head',
             'attributes' => [
                 'name' => $name,
-                'title' => (collect($this->fieldsNames())->has($name) ? collect($this->fieldsNames())->get($name) : $name),
-                'class' => (collect($this->listFieldsClasses())->has($name) ? collect($this->listFieldsClasses())->get($name) : ''),
+                'title' => $this->mappedFieldName($name),
+                'class' => $this->mappedListFieldClass($name),
+                'order' => $this->mappedOrderField($name),
+            ],
+        ]);
+    }
+
+    public function getIdListHeadField()
+    {
+        return collect([
+            'template' => 'partials.builder.table.fields.head',
+            'attributes' => [
+                'name' => 'id',
+                'title' => '#',
+                'class' => $this->mappedListFieldClass('id', 'text-right'),
+                'order' => $this->mappedOrderField('id'),
             ],
         ]);
     }
@@ -161,8 +169,20 @@ trait ModuleExtensionTrait
             'template' => 'partials.builder.table.fields.body',
             'attributes' => [
                 'name' => $name,
-                'value' => ((!is_null($this->$name) && ($this->$name !== '')) ? $this->$name : '—'),
-                'class' => (collect($this->listFieldsClasses())->has($name) ? collect($this->listFieldsClasses())->get($name) : ''),
+                'value' => $this->mappedValue($this->$name),
+                'class' => $this->mappedListFieldClass($name),
+            ],
+        ]);
+    }
+
+    public function getIdListField()
+    {
+        return collect([
+            'template' => 'partials.builder.table.fields.body',
+            'attributes' => [
+                'name' => 'id',
+                'value' => ($this->id ? "{$this->id}." : '—'),
+                'class' => $this->mappedListFieldClass('id', 'text-right'),
             ],
         ]);
     }
@@ -179,11 +199,11 @@ trait ModuleExtensionTrait
 
         return collect([
             'template' => 'partials.builder.form.fields.inputText',
-            'fields' => [
+            'attributes' => [
                 'name' => $name,
-                'title' => (collect($this->fieldsNames())->has($name) ? collect($this->fieldsNames())->get($name) : $name),
-                'value' => ($this->$name ? $this->$name : ''),
-                'class' => (collect($this->itemFieldsClasses())->has($name) ? collect($this->itemFieldsClasses())->get($name) : ''),
+                'title' => $this->mappedFieldName($name),
+                'value' => $this->mappedValue($this->$name, ''),
+                'class' => $this->mappedEditorFieldClass($name),
                 'comment' => '',
             ],
         ]);
@@ -199,13 +219,131 @@ trait ModuleExtensionTrait
 
         return collect([
             'template' => 'partials.builder.filter.fields.inputText',
-            'fields' => [
+            'attributes' => [
                 'name' => $name,
-                'title' => (collect($this->fieldsNames())->has($name) ? collect($this->fieldsNames())->get($name) : $name),
-                'class' => (collect($this->filterFieldsClasses())->has($name) ? collect($this->filterFieldsClasses())->get($name) : ''),
+                'title' => $this->mappedFieldName($name),
+                'class' => $this->mappedFilterFieldClass($name),
                 'value' => '',
                 'comment' => '',
             ],
         ]);
+    }
+
+    public function mappedFieldName($name, $default = '')
+    {
+        return $this->mappedFieldsNames()->has($name) ? $this->mappedFieldsNames()->get($name) : $default;
+    }
+
+    public function mappedListField($name, $default = '')
+    {
+        return $this->mappedListFields()->has($name) ? $this->mappedListFields()->get($name) : $default;
+    }
+
+    public function mappedEditorField($name, $default = '')
+    {
+        return $this->mappedEditorFields()->has($name) ? $this->mappedEditorFields()->get($name) : $default;
+    }
+
+    public function mappedFilterField($name, $default = '')
+    {
+        return $this->mappedFilterFields()->has($name) ? $this->mappedFilterFields()->get($name) : $default;
+    }
+
+    public function mappedOrderField($name, $default = 'none')
+    {
+        return $this->mappedOrderFields()->has($name) ? $this->mappedOrderFields()->get($name) : $default;
+    }
+
+    public function mappedListFieldClass($name, $default = '')
+    {
+        return $this->mappedListFieldsClasses()->has($name) ? $this->mappedListFieldsClasses()->get($name) : $default;
+    }
+
+    public function mappedEditorFieldClass($name, $default = '')
+    {
+        return $this->mappedEditorFieldsClasses()->has($name) ? $this->mappedEditorFieldsClasses()->get($name) : $default;
+    }
+
+    public function mappedFilterFieldClass($name, $default = '')
+    {
+        return $this->mappedFilterFieldsClasses()->has($name) ? $this->mappedFilterFieldsClasses()->get($name) : $default;
+    }
+
+    public function mappedValue($value, $default = '—')
+    {
+        return ((!is_null($value) && ($value !== '')) ? $value : $default);
+    }
+
+    public function mappedFieldsNames()
+    {
+        return collect($this->fieldsNames());
+    }
+
+    public function mappedListFields()
+    {
+        return collect($this->listFields())
+            ->prepend('id')
+            ->map(function ($name) {
+                return $this->mappedField($name);
+            });
+    }
+
+    public function mappedEditorFields()
+    {
+        return collect($this->itemFields())->map(function ($name) {
+            return $this->mappedField($name);
+        });
+    }
+
+    public function mappedFilterFields()
+    {
+        return collect($this->filterFields())->map(function ($name) {
+            return $this->mappedField($name);
+        });
+    }
+
+    public function mappedOrderFields()
+    {
+        $fields = collect(Request::capture()->input('order'))
+            ->filter();
+
+        if ($fields->isEmpty()) {
+            $fields = collect();
+
+            foreach ($this->orderFields() as $key => $item) {
+                if (is_integer($key)) {
+                    $fields->put($this->mappedField($item), 'asc');
+                } else {
+                    $fields->put($this->mappedField($key), $item);
+                }
+            }
+        }
+
+        return $fields;
+    }
+
+    public function mappedListFieldsClasses()
+    {
+        return collect($this->listFieldsClasses());
+    }
+
+    public function mappedEditorFieldsClasses()
+    {
+        return collect($this->itemFieldsClasses());
+    }
+
+    public function mappedFilterFieldsClasses()
+    {
+        return collect($this->filterFieldsClasses());
+    }
+
+    public function mappedField($name)
+    {
+        return ModuleHelper::underScoreToCamelCase($name);
+    }
+
+    public function unmappedField($name)
+    {
+        return ModuleHelper::camelCaseToUnderScore($name);
     }
 }

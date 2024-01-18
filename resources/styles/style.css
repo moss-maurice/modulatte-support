@@ -32,8 +32,9 @@
     cursor: default;
 }
 
-.pagination .active {
-}
+/*.pagination .active {
+    
+}*/
 
 .pagination .btn {
     cursor: pointer;
@@ -122,4 +123,9 @@ td.description {
 }
 .form-control.size-xl {
     width: 100% !important;
+}
+
+table.table thead tr th.tableHeader .order {
+  display: block;
+  cursor: pointer;
 }

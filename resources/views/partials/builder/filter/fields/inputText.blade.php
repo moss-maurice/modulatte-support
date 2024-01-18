@@ -7,7 +7,7 @@
 <div class="px-2{{ $class }}">
     <label for="{{ $name }}">{{ $title }}</label>
     <br />
-    <input type="text" class="form-control form-control-sm" id="{{ $name }}" name="{{ $name }}" value="{{ $value }}" style="width: 100% !important;" />
+    <input type="text" name="filter[{{ $name }}]" class="form-control form-control-sm" id="{{ $name }}" value="{{ $value }}" style="width: 100% !important;" />
     <small class="form-text text-muted comment">{{ $comment }}</small>
 </div>
 <!-- / modulatte.partials.builder.filter.fields.inputText -->

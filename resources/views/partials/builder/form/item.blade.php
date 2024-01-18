@@ -1,3 +1,3 @@
 <!-- modulatte.partials.builder.form.item -->
-@include ("{$namespace}::{$template}", $fields)
+@include ("{$namespace}::{$template}", $attributes)
 <!-- / modulatte.partials.builder.form.item -->

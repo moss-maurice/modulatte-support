@@ -49,6 +49,7 @@ abstract class CrudController extends \mmaurice\modulatte\Support\Controllers\Co
     {
         return $this->render('list', [
             'list' => $this->model::filtered()
+                ->ordered()
                 ->paginate(25)
                 ->withQueryString()
                 ->withPath(ModuleHelper::makeUrl([

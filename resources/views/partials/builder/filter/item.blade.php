@@ -1,3 +1,3 @@
 <!-- modulatte.partials.builder.filter.item -->
-@include ("{$namespace}::{$template}", $fields)
+@include ("{$namespace}::{$template}", $attributes)
 <!-- / modulatte.partials.builder.filter.item -->
