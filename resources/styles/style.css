@@ -11,8 +11,10 @@
 
 .pagination .page-item.first:hover,
 .pagination .page-item.last:hover,
+.pagination .page-item.prev:hover,
+.pagination .page-item.next:hover,
 .pagination .page-item.num:hover:not(.active) {
-    background-color: #efefef;
+    background-color: #e2e6ea;
     color: #292b2c;
 }
 
@@ -30,6 +32,11 @@
 .pagination .pagination span {
     margin: 5px;
     cursor: default;
+}
+
+.pagination .btn {
+    text-transform: initial !important;
+    background-color: transparent;
 }
 
 /*.pagination .active {
@@ -103,6 +110,7 @@
     min-width: 220px;
     max-width: 220px;
     text-align: right;
+    text-transform: initial !important;
 }
 
 /*custom*/

@@ -3,9 +3,5 @@
     $value = (isset($value) ? $value : '');
 @endphp
 
-<tr class="hide">
-    <td colspan="2">
-        <input type="hidden" name="{{ $name }}" value="{{ $value }}" />
-    </td>
-</tr>
+<input type="hidden" name="{{ $name }}" value="{{ $value }}" />
 <!-- / modulatte.partials.builder.form.fields.inputHidden -->

@@ -1,3 +1,3 @@
 <!-- modulatte.partials.simpleTab -->
-{!! $module->tab()->content() !!}
+{!! $tab->content() !!}
 <!-- / modulatte.partials.simpleTab -->

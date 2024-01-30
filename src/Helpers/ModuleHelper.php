@@ -23,10 +23,15 @@ class ModuleHelper
         return implode("?", [parse_url($modx->getManagerPath(), PHP_URL_PATH), http_build_query($data)]);
     }
 
-    public static function redirectUrl(array $data = [], $module = null, $full = false)
+    public static function redirect(array $data = [], $module = null, $full = false)
     {
         $url = static::makeUrl($data, $module, $full);
 
+        return static::redirectUrl($url);
+    }
+
+    public static function redirectUrl($url)
+    {
         header("Location: {$url}");
 
         exit;

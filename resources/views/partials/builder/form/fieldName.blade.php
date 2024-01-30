@@ -1,6 +1,4 @@
 <!-- modulatte.partials.builder.form.fieldName -->
-<td class="warning" nowrap="">
-    {{ $title }} <br />
+    <div class="font-weight-bold">{{ $title }}</div>
     <small>[({{ $name }})]</small>
-</td>
 <!-- / modulatte.partials.builder.form.fieldName -->

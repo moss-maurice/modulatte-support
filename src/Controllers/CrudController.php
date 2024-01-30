@@ -5,35 +5,72 @@ namespace mmaurice\modulatte\Support\Controllers;
 use Illuminate\Support\Collection;
 use mmaurice\modulatte\Support\Components\ActionElement;
 use mmaurice\modulatte\Support\Helpers\ModuleHelper;
+use mmaurice\modulatte\Support\Module;
+use mmaurice\modulatte\Support\Traits\Controllers\ChildsExtensionTrait;
 
-abstract class CrudController extends \mmaurice\modulatte\Support\Controllers\Controller
+abstract class CrudController extends \mmaurice\modulatte\Support\Controllers\Controller implements \mmaurice\modulatte\Support\Interfaces\CrudControllerInterface
 {
+    use ChildsExtensionTrait;
+
     protected $model;
+    protected $pagination = 25;
+    protected $filters = [];
+
+    public function __construct(Module $module)
+    {
+        parent::__construct($module);
+
+        $this->childs();
+    }
 
     public function model()
     {
         return new $this->model;
     }
 
+    public function pagination()
+    {
+        return $this->pagination;
+    }
+
+    public function setPagination($pagination)
+    {
+        $this->pagination = $pagination;
+
+        return $this;
+    }
+
+    public function withFilter(array $filter)
+    {
+        $this->filters = $filter;
+
+        return $this;
+    }
+
     public function actionBar(Collection $actions = null)
     {
-        if (in_array($this->module->methodName(), ['index', 'list'])) {
+        if (in_array($this->method(), ['index', 'list'])) {
             $actions = collect([
                 ActionElement::build('Добавить', ModuleHelper::makeUrl([
                     'tab' => $this->slug,
                     'method' => 'create',
+                    'redirect' => $this->makeParentRedirect(),
                 ]), 'success', 'plus'),
             ]);
         }
 
-        if (in_array($this->module->methodName(), ['create', 'update'])) {
+        if (in_array($this->method(), ['create', 'update'])) {
             $actions = collect([
                 ActionElement::build('Сохранить', 'javascript:;', 'success', null, collect([
                     'onclick' => "document.getElementById('{$this->module->slug()}').submit(); return false;",
                 ])),
-                ActionElement::build('Назад', ModuleHelper::makeUrl([
-                    'tab' => $this->slug,
-                ]), 'secondary'),
+                ActionElement::build('Назад', $this->module->request()->input('redirect', ModuleHelper::makeUrl([
+                    'tab' => $this->module->tabName(),
+                    'method' => $this->module->methodName(),
+                    'itemId' => $this->module->itemId(),
+                    'filter' => $this->module->filter(),
+                    'order' => $this->module->order(),
+                ])), 'secondary'),
             ]);
         }
 
@@ -48,14 +85,20 @@ abstract class CrudController extends \mmaurice\modulatte\Support\Controllers\Co
     public function list()
     {
         return $this->render('list', [
-            'list' => $this->model::filtered()
+            'list' => $this->model::filtered($this->filters)
                 ->ordered()
-                ->paginate(25)
-                ->withQueryString()
+                ->paginate($this->pagination())
+                //->withQueryString()
                 ->withPath(ModuleHelper::makeUrl([
-                    'tab' => $this->slug, //url для пагинации
+                    'tab' => $this->module->tabName(),
+                    'method' => $this->module->methodName(),
+                    'itemId' => $this->module->itemId(),
+                    'filter' => $this->module->filter(),
+                    'order' => $this->module->order(),
+                    'page' => $this->module->request()->input('page'),
                 ])),
-            'message' => 'Пока ничего добавлено! Добавить?',
+            'message' => 'Ничего не найдено! Добавить?',
+            'redirect' => $this->makeParentRedirect(),
         ]);
     }
 
@@ -64,27 +107,31 @@ abstract class CrudController extends \mmaurice\modulatte\Support\Controllers\Co
         if ($this->module->request()->isMethod('post')) {
             $item = $this->model::create($this->module->request()->post());
 
-            return ModuleHelper::redirectUrl([
+            return ModuleHelper::redirect([
                 'tab' => $this->slug,
                 'method' => 'update',
                 'itemId' => $item->id,
+                'redirect' => $this->module->request()->input('redirect'),
             ]);
         }
 
         return $this->render('create', [
             'item' => $this->model(),
+            'redirect' => $this->makeParentRedirect(),
         ]);
     }
 
     public function update()
     {
+        $redirect = $this->module->request()->input('redirect', ModuleHelper::makeUrl([
+            'tab' => $this->slug,
+        ]));
+
         $itemId = $this->module->request()->input('itemId');
 
         if (is_null($itemId)) {
             return $this->message('Попытка запросить не существующую страницу. Пожалуйста, убедитесь, что вы верно передали аргументы запроса!', collect([
-                ActionElement::build('Назад', ModuleHelper::makeUrl([
-                    'tab' => $this->slug,
-                ]), 'secondary', 'angle-left'),
+                ActionElement::build('Назад', $redirect, 'secondary', 'angle-left'),
             ]));
         }
 
@@ -92,9 +139,7 @@ abstract class CrudController extends \mmaurice\modulatte\Support\Controllers\Co
 
         if (!$item) {
             return $this->message('Маршрут с таким идентификатором не существует', collect([
-                ActionElement::build('Назад', ModuleHelper::makeUrl([
-                    'tab' => $this->slug,
-                ]), 'secondary', 'angle-left'),
+                ActionElement::build('Назад', $redirect, 'secondary', 'angle-left'),
             ]));
         }
 
@@ -105,18 +150,22 @@ abstract class CrudController extends \mmaurice\modulatte\Support\Controllers\Co
 
         return $this->render('update', [
             'item' => $item,
+            'grids' => $this->getChilds($item),
         ]);
     }
 
     public function delete()
     {
+        $redirect = $this->module->request()->input('redirect', ModuleHelper::makeUrl([
+            'tab' => $this->slug,
+            'method' => 'list',
+        ]));
+
         $itemId = $this->module->request()->input('itemId');
 
         if (is_null($itemId)) {
             return $this->message('Попытка запросить не существующую страницу. Пожалуйста, убедитесь, что вы верно передали аргументы запроса!', collect([
-                ActionElement::build('Назад', ModuleHelper::makeUrl([
-                    'tab' => $this->slug,
-                ]), 'secondary', 'angle-left'),
+                ActionElement::build('Назад', $redirect, 'secondary', 'angle-left'),
             ]));
         }
 
@@ -124,16 +173,12 @@ abstract class CrudController extends \mmaurice\modulatte\Support\Controllers\Co
 
         if (!$item) {
             return $this->message('Маршрут с таким идентификатором не существует', collect([
-                ActionElement::build('Назад', ModuleHelper::makeUrl([
-                    'tab' => $this->slug,
-                ]), 'secondary', 'angle-left'),
+                ActionElement::build('Назад', $redirect, 'secondary', 'angle-left'),
             ]));
         }
 
         $item->delete();
 
-        return ModuleHelper::redirectUrl([
-            'tab' => $this->slug,
-        ]);
+        return ModuleHelper::redirectUrl($redirect);
     }
 }

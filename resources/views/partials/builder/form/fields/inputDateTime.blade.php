@@ -6,13 +6,7 @@
     $class = (isset($class) ? " {$class}" : '');
 @endphp
 
-<tr>
-    @include("{$namespace}::partials.builder.form.fieldName")
+<input type="date" name="{{ $name }}" id="date-from" class="form-control DatePicker unstyled date-datepicker date-from-datepicker{{ $class }}" value="{{ $value }}" placeholder="{{ $placeholder }}" autocomplete="off" />
 
-    <td>
-        <input type="date" name="{{ $name }}" id="date-from" class="form-control DatePicker unstyled date-datepicker date-from-datepicker{{ $class }}" value="{{ $value }}" placeholder="{{ $placeholder }}" autocomplete="off" />
-
-        <div class="form-text text-muted comment">{{ $comment }}</div>
-    </td>
-</tr>
+<div class="form-text text-muted comment">{{ $comment }}</div>
 <!-- / modulatte.partials.builder.form.fields.inputDateTime -->

@@ -4,7 +4,7 @@
         @foreach ($buttons as $index => $button)
             @if ($button->hasDropdown())
                 <div class="btn-group dropdown">
-                    <a id="Button{{ ($index + 1) }}" class="btn btn-{{ $button->getStyle() }}" href="{{ $button->getTarget() }}"{!! $button->getPropsToLine() !!}>
+                    <a id="Button{{ ($index + 1) }}" class="btn btn-{{ $button->getStyle() }} btn-sm" href="{{ $button->getTarget() }}"{!! $button->getPropsToLine() !!}>
                         @if ($button->hasIcon())
                             <i class="{{ $button->getIcon() }}"></i>
                         @endif
@@ -20,7 +20,7 @@
                     </select>
                 </div>
             @else
-                <a id="Button{{ ($index + 1) }}" class="btn btn-{{ $button->getStyle() }}" href="{{ $button->getTarget() }}"{!! $button->getPropsToLine() !!}>
+                <a id="Button{{ ($index + 1) }}" class="btn btn-{{ $button->getStyle() }} btn-sm" href="{{ $button->getTarget() }}"{!! $button->getPropsToLine() !!}>
                     @if ($button->hasIcon())
                         <i class="{{ $button->getIcon() }}"></i>
                     @endif

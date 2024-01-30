@@ -19,13 +19,12 @@
                 <tr>
                     @if ($fields and $fields->isNotEmpty())
                         @foreach ($fields as $field)
-                            @include ("{$namespace}::partials.builder.table.item", $module->tab()->model()->getListHeadField($field))
+                            @include ("{$namespace}::partials.builder.table.item", $tab->model()->getListHeadField($field))
                         @endforeach
                     @endif
 
-                    @include ("{$namespace}::partials.builder.table.fields.head", [
+                    @include ("{$namespace}::partials.builder.table.fields.headControl", [
                         'name' => 'controls',
-                        'title' => '',
                         'class' => 'controls',
                     ])
                 </tr>
@@ -42,16 +41,18 @@
                         <td class="tableItem controls text-right">
                             @include ("{$namespace}::partials.actionBar", [
                                 'buttons' => collect([
-                                    ActionElement::build('Изменить', ModuleHelper::makeUrl([
-                                        'tab' => $module->tab()->slug(),
+                                    ActionElement::build('Изменить', ModuleHelper::makeUrl(array_filter([
+                                        'tab' => $tab->slug(),
                                         'method' => 'update',
                                         'itemId' => $item->id,
-                                    ]), 'success btn-sm', 'edit'),
-                                    ActionElement::build('Удалить', ModuleHelper::makeUrl([
-                                        'tab' => $module->tab()->slug(),
+                                        'redirect' => $redirect,
+                                    ])), 'success btn-sm', 'edit'),
+                                    ActionElement::build('Удалить', ModuleHelper::makeUrl(array_filter([
+                                        'tab' => $tab->slug(),
                                         'method' => 'delete',
                                         'itemId' => $item->id,
-                                    ]), 'danger btn-sm', 'trash-o'),
+                                        'redirect' => $redirect,
+                                    ])), 'danger btn-sm', 'trash-o'),
                                 ]),
                             ])
                         </td>

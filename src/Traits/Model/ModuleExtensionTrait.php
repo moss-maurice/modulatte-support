@@ -52,22 +52,21 @@ trait ModuleExtensionTrait
         return [];
     }
 
-    public function scopeFiltered($query)
+    public function scopeFiltered($query, array $fields = [])
     {
         $query = $query->published();
 
         $rules = collect($this->filterRules());
 
         collect($this->filterFields())
-            ->each(function ($item) use ($rules, &$query) {
-
+            ->each(function ($item) use ($rules, $fields, &$query) {
                 if ($rules->isNotEmpty() and $rules->has($item)) {
                     $callback = $rules->get($item);
 
                     $query = call_user_func_array($callback, [$query]);
                 } else {
                     $field = Request::capture()
-                        ->input("filter.{$item}");
+                        ->input("filter.{$item}", array_key_exists($item, $fields) ? $fields[$item] : null);
 
                     $query->when(!is_null($field) and !empty($field), function ($query) use ($item, $field) {
                         $query->where($item, $field);
@@ -78,7 +77,7 @@ trait ModuleExtensionTrait
         return $query;
     }
 
-    public function scopeOrdered($query)
+    public function scopeOrdered($query, array $fields = [])
     {
         $orders = $this->mappedOrderFields();
 
@@ -169,7 +168,7 @@ trait ModuleExtensionTrait
             'template' => 'partials.builder.table.fields.body',
             'attributes' => [
                 'name' => $name,
-                'value' => $this->mappedValue($this->$name),
+                'value' => $this->mappedFieldValue($this->$name),
                 'class' => $this->mappedListFieldClass($name),
             ],
         ]);
@@ -202,7 +201,7 @@ trait ModuleExtensionTrait
             'attributes' => [
                 'name' => $name,
                 'title' => $this->mappedFieldName($name),
-                'value' => $this->mappedValue($this->$name, ''),
+                'value' => $this->mappedFieldValue($this->$name, ''),
                 'class' => $this->mappedEditorFieldClass($name),
                 'comment' => '',
             ],
@@ -223,7 +222,7 @@ trait ModuleExtensionTrait
                 'name' => $name,
                 'title' => $this->mappedFieldName($name),
                 'class' => $this->mappedFilterFieldClass($name),
-                'value' => '',
+                'value' => $this->mappedFilterFieldValue($name),
                 'comment' => '',
             ],
         ]);
@@ -269,9 +268,14 @@ trait ModuleExtensionTrait
         return $this->mappedFilterFieldsClasses()->has($name) ? $this->mappedFilterFieldsClasses()->get($name) : $default;
     }
 
-    public function mappedValue($value, $default = '—')
+    public function mappedFieldValue($value, $default = '—')
     {
         return ((!is_null($value) && ($value !== '')) ? $value : $default);
+    }
+
+    public function mappedFilterFieldValue($name, $default = null)
+    {
+        return Request::capture()->input("filter.{$name}", $default);
     }
 
     public function mappedFieldsNames()

@@ -7,12 +7,16 @@
 
 <th class="tableHeader {{ $name }} {{ $class }}" data-field="{{ $name }}"{{ ($colspan > 1 ? " colspan=\"{$colspan}\"" : '') }}{{ ($rowspan > 1 ? " rowspan=\"{$rowspan}\"" : '') }}>
     @if (!empty($title))
-        <span class="order">
-            {{ $title }}
-            <i class="fa fa-solid fa-sort{{ ($order !== 'asc' ? ($order !== 'desc' ? '' : '-down text-success') : '-up text-success') }}"></i>
-        </span>
+        @if ($tab->orderForm())
+            <span class="order">
+                {{ $title }}
+                <i class="fa fa-solid fa-sort{{ ($order !== 'asc' ? ($order !== 'desc' ? '' : '-down text-success') : '-up text-success') }}"></i>
+            </span>
 
-        <input type="hidden" name="order[{{ $name }}]" value="{{ $order }}" />
+            <input type="hidden" name="order[{{ $name }}]" value="{{ $order }}" />
+        @else
+            {{ $title }}
+        @endif
     @endif
 </th>
 <!-- / modulatte.partials.builder.table.fields.head -->

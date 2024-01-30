@@ -6,13 +6,7 @@
     $class = (isset($class) ? " {$class}" : '');
 @endphp
 
-<tr>
-    @include("{$namespace}::partials.builder.form.fieldName")
+<input type="text" class="form-control{{ $class }}" name="{{ $name }}" value="{{ $value }}"{!! ($required ? ' required' : '') !!} />
 
-    <td data-type="text">
-        <input type="text" class="form-control{{ $class }}" name="{{ $name }}" value="{{ $value }}"{!! ($required ? ' required' : '') !!} />
-
-        <div class="form-text text-muted comment">{{ $comment }}</div>
-    </td>
-</tr>
+<div class="form-text text-muted comment">{{ $comment }}</div>
 <!-- / modulatte.partials.builder.form.fields.inputText -->

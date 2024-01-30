@@ -40,14 +40,29 @@ abstract class Module implements \mmaurice\modulatte\Support\Interfaces\ModuleIn
         return $this->request;
     }
 
-    public function tabName()
+    public function tabName($default = 'main')
     {
-        return $this->request()->input('tab', 'main');
+        return $this->request()->input('tab', $default);
     }
 
-    public function methodName()
+    public function methodName($default = 'index')
     {
-        return $this->request()->input('method', 'index');
+        return $this->request()->input('method', $default);
+    }
+
+    public function itemId($default = null)
+    {
+        return $this->request()->input('itemId', $default);
+    }
+
+    public function filter(array $default = [])
+    {
+        return $this->request()->input('filter', $default);
+    }
+
+    public function order(array $default = [])
+    {
+        return $this->request()->input('order', $default);
     }
 
     public function path($path = '')
@@ -160,6 +175,7 @@ abstract class Module implements \mmaurice\modulatte\Support\Interfaces\ModuleIn
         echo $this->makeView($template, array_merge([
             'modx' => EvolutionCMS(),
             'module' => $this,
+            'tab' => $this->tab(),
         ], $properties));
 
         include_once realpath(MODX_MANAGER_PATH . 'includes/footer.inc.php');

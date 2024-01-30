@@ -5,7 +5,7 @@
 
 @section ('actions')
     @include ("{$namespace}::partials.actionBar", [
-        'buttons' => $module->tab()->actionBar(),
+        'buttons' => $tab->actionBar(),
     ])
 @endsection
 <!-- / modulatte.main -->

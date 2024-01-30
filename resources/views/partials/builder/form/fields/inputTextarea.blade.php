@@ -8,13 +8,7 @@
     $class = (isset($class) ? " {$class}" : '');
 @endphp
 
-<tr>
-    @include("{$namespace}::partials.builder.form.fieldName")
+<textarea name="{{ $name }}" class="form-control{{ $class }}" cols="{{ $cols }}" rows="{{ $rows }}"{!! ($required ? ' required' : '') !!}>{{ $value }}</textarea>
 
-    <td data-type="textareamini">
-        <textarea name="{{ $name }}" class="form-control{{ $class }}" cols="{{ $cols }}" rows="{{ $rows }}"{!! ($required ? ' required' : '') !!}>{{ $value }}</textarea>
-
-        <div class="form-text text-muted comment">{{ $comment }}</div>
-    </td>
-</tr>
+<div class="form-text text-muted comment">{{ $comment }}</div>
 <!-- / modulatte.partials.builder.form.fields.inputTextarea -->

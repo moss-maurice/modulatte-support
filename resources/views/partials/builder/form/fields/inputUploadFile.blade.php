@@ -7,21 +7,15 @@
     $comment = (isset($comment) ? $comment : '');
 @endphp
 
-<tr>
-    @include("{$namespace}::partials.builder.form.fieldName")
+@if ($value)
+    <img src="{{Storage::disk('showplaces')->url($value)}}" alt="" style="max-width: {{ $width }}px; max-height: {{ $height }}px;" />
+    <br />
+    <label for="deletePhoto">Удалить это фото</label>
+    <input type="checkbox" value="1" name="deletePhoto" id="deletePhoto" />
+    <hr />
+@endif
 
-    <td data-type="text">
-        @if ($value)
-            <img src="{{Storage::disk('showplaces')->url($value)}}" alt="" style="max-width: {{ $width }}px; max-height: {{ $height }}px;" />
-            <br />
-            <label for="deletePhoto">Удалить это фото</label>
-            <input type="checkbox" value="1" name="deletePhoto" id="deletePhoto" />
-            <hr />
-        @endif
+<input type="file" id="avatar" name="{{$name}}" accept="image/png, image/jpeg" />
 
-        <input type="file" id="avatar" name="{{$name}}" accept="image/png, image/jpeg" />
-
-        <div class="form-text text-muted comment">{{ $comment }}</div>
-    </td>
-</tr>
+<div class="form-text text-muted comment">{{ $comment }}</div>
 <!-- / modulatte.partials.builder.form.fields.inputUploadFile -->

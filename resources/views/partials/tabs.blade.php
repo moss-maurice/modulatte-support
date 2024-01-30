@@ -4,18 +4,18 @@
 @endphp
 
 @if ($module->tabs()->isNotEmpty())
-    @foreach ($module->tabs() as $tab)
-        <div class="tab-page" id="tab_{{ $tab->slug() }}">
+    @foreach ($module->tabs() as $currentTab)
+        <div class="tab-page" id="tab_{{ $currentTab->slug() }}">
             <h2 class="tab">
-                <a href="{{ ModuleHelper::makeUrl(['tab' => $tab->slug()]) }}">{{ $tab->name() }}</a>
+                <a href="{{ ModuleHelper::makeUrl(['tab' => $currentTab->slug()]) }}">{{ $currentTab->name() }}</a>
             </h2>
 
             <script type="text/javascript">
-                tpSettings.addTabPage(document.getElementById('tab_{{ $tab->slug() }}'));
+                tpSettings.addTabPage(document.getElementById('tab_{{ $currentTab->slug() }}'));
             </script>
 
-        @if ($tab->slug() === $module->tab()->slug())
-            {!! $tab->content() !!}
+        @if ($currentTab->slug() === $module->tab()->slug())
+            {!! $currentTab->content() !!}
         @endif
 
         </div>

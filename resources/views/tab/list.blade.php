@@ -12,23 +12,26 @@
         'value' => 'index',
     ])
 
-    @include("{$namespace}::partials.filter", [
-        'fields' => collect($module->tab()->model()->filterFields()),
-    ])
+    @if ($tab->filterForm())
+        @include("{$namespace}::partials.filter", [
+            'fields' => collect($tab->model()->filterFields()),
+        ])
+    @endif
 
     @if (!empty($list->items()))
         @include ("{$namespace}::partials.builder.container.list", [
-            'fields' => $module->tab()->model()->mappedListFields(),
-            'columnsCount' => $module->tab()->model()->mappedListFields()->count() + 1,
+            'fields' => $tab->model()->mappedListFields(),
+            'columnsCount' => $tab->model()->mappedListFields()->count() + 1,
         ])
     @else
         @include ("{$namespace}::partials.message", [
             'message' => $message ? $message : 'Items is not found! Add new item?',
-            'messageType' => $module->tab()::MESSAGE_DANGER,
+            'messageType' => $tab::MESSAGE_DANGER,
             'buttons' => collect([
                 ActionElement::build('Добавить', ModuleHelper::makeUrl([
-                    'tab' => $tab->alias,
-                    'method' => 'add',
+                    'tab' => $tab->slug(),
+                    'method' => 'create',
+                    'redirect' => $tab->makeParentRedirect(),
                 ]), 'success', 'plus'),
             ]),
         ])

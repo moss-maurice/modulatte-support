@@ -16,9 +16,15 @@ interface ModuleInterface
 
     public function request();
 
-    public function tabName();
+    public function tabName($default = 'main');
 
-    public function methodName();
+    public function methodName($default = 'index');
+
+    public function itemId($default = null);
+
+    public function filter(array $default = []);
+
+    public function order(array $default = []);
 
     public function tabs();
 

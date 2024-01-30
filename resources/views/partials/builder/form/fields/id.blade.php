@@ -3,13 +3,7 @@
     $comment = (isset($comment) ? $comment : '');
 @endphp
 
-<tr>
-    @include("{$namespace}::partials.builder.form.fieldName")
+<strong>{{ $value }}</strong>
 
-    <td data-type="text">
-        <strong>{{ $value }}</strong>
-
-        <div class="form-text text-muted comment">{{ $comment }}</div>
-    </td>
-</tr>
+<div class="form-text text-muted comment">{{ $comment }}</div>
 <!-- / modulatte.partials.builder.form.fields.id -->

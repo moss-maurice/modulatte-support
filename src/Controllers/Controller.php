@@ -8,7 +8,7 @@ use mmaurice\modulatte\Support\Components\ActionElement;
 use mmaurice\modulatte\Support\Helpers\ModuleHelper;
 use mmaurice\modulatte\Support\Module;
 
-class Controller
+class Controller implements \mmaurice\modulatte\Support\Interfaces\ControllerInterface
 {
     const MESSAGE_PRIMARY = 'primary';
     const MESSAGE_SECONDARY = 'secondary';
@@ -24,6 +24,7 @@ class Controller
     protected $position = 9999;
     protected $slug;
     protected $name;
+    protected $methodName;
 
     public function __construct(Module $module)
     {
@@ -60,7 +61,7 @@ class Controller
 
     public function method()
     {
-        return $this->module->methodName();
+        return is_null($this->methodName) ? $this->module->methodName() : $this->methodName;
     }
 
     protected function setupSlug()
@@ -113,10 +114,12 @@ class Controller
         ]);
     }
 
-    public function execute()
+    public function execute($method = null)
     {
         try {
-            $method = $this->module->methodName();
+            $this->methodName = !is_null($method) ? $method : null;
+
+            $method = $this->method();
 
             if (!method_exists($this, $method)) {
                 throw new Exception("Запрошенный метод '{$method}' не найден");
@@ -132,9 +135,9 @@ class Controller
         }
     }
 
-    public function content()
+    public function content($method = null)
     {
-        $tabResource = $this->execute();
+        $tabResource = $this->execute($method);
 
         $blade = "tab.{$tabResource->get('template')}";
 
@@ -147,6 +150,7 @@ class Controller
         $data = array_merge($tabResource->get('data', []), [
             'modx' => EvolutionCMS(),
             'module' => $this->module,
+            'tab' => $this,
         ]);
 
         return $this->module->makeView($blade, $data);
