@@ -25,6 +25,7 @@ class Controller implements \mmaurice\modulatte\Support\Interfaces\ControllerInt
     protected $slug;
     protected $name;
     protected $methodName;
+    protected $hideTab = false;
 
     public function __construct(Module $module)
     {
@@ -62,6 +63,11 @@ class Controller implements \mmaurice\modulatte\Support\Interfaces\ControllerInt
     public function method()
     {
         return is_null($this->methodName) ? $this->module->methodName() : $this->methodName;
+    }
+
+    public function hideTab()
+    {
+        return $this->hideTab;
     }
 
     protected function setupSlug()

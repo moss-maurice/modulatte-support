@@ -40,9 +40,9 @@ abstract class Module implements \mmaurice\modulatte\Support\Interfaces\ModuleIn
         return $this->request;
     }
 
-    public function tabName($default = 'main')
+    public function tabName($default = null)
     {
-        return $this->request()->input('tab', $default);
+        return $this->request()->input('tab', is_null($default) ? $this->tabs()->first()->slug() : $default);
     }
 
     public function methodName($default = 'index')
@@ -123,7 +123,9 @@ abstract class Module implements \mmaurice\modulatte\Support\Interfaces\ModuleIn
                     return null;
                 }
             })
-            ->filter()
+            ->filter(function ($item) {
+                return !is_null($item) && !$item->hideTab() ? true : false;
+            })
             ->sort(function ($left, $right) {
                 return $left->position() <=> $right->position();
             })
