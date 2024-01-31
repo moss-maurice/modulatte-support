@@ -8,7 +8,7 @@
     $class = (isset($class) ? " {$class}" : '');
 @endphp
 
-<input type="number" class="form-control{{ $class }}"  name="{{ $name }}"{!! ($required ? ' min="' . $min . '"' : '') !!}{!! ($required ? ' max="' . $max . '"' : '') !!} value="{{ $value }}"{!! ($required ? ' required' : '') !!} />
+<input type="number" class="form-control{{ $class }}"  name="{{ $name }}"{!! (!is_null($min) ? ' min="' . $min . '"' : '') !!}{!! (!is_null($max) ? ' max="' . $max . '"' : '') !!} value="{{ $value }}"{!! ($required ? ' required' : '') !!} />
 
 <div class="form-text text-muted comment">{{ $comment }}</div>
 <!-- / modulatte.partials.builder.form.fields.inputNumber -->
