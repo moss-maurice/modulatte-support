@@ -26,7 +26,7 @@ interface ModuleInterface
 
     public function order(array $default = []);
 
-    public function tabs();
+    public function tabs(bool $withHide = false);
 
     public function tab();
 

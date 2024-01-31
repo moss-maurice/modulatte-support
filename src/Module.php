@@ -103,7 +103,7 @@ abstract class Module implements \mmaurice\modulatte\Support\Interfaces\ModuleIn
         return $path;
     }
 
-    public function tabs()
+    public function tabs(bool $withHide = false)
     {
         return $this->search('modules/' . ucfirst($this->slug()) . '/Controllers', '*Controller.php')
             ->map(function ($item) {
@@ -123,8 +123,8 @@ abstract class Module implements \mmaurice\modulatte\Support\Interfaces\ModuleIn
                     return null;
                 }
             })
-            ->filter(function ($item) {
-                return !is_null($item) && !$item->hideTab() ? true : false;
+            ->filter(function ($item) use ($withHide) {
+                return !is_null($item) && ($withHide || !$item->hideTab()) ? true : false;
             })
             ->sort(function ($left, $right) {
                 return $left->position() <=> $right->position();
@@ -145,7 +145,7 @@ abstract class Module implements \mmaurice\modulatte\Support\Interfaces\ModuleIn
             $tabName = $this->tabName();
         }
 
-        $tabs = $this->tabs();
+        $tabs = $this->tabs(true);
 
         if ($tabs->has($tabName)) {
             return $tabs->get($tabName);
