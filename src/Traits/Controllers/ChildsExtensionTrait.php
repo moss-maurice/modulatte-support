@@ -130,7 +130,7 @@ trait ChildsExtensionTrait
                     ->setParent($this)
                     ->setItem($item)
                     ->withoutFilterForm()
-                    ->withoutOrderForm()
+                    //->withoutOrderForm()
                     ->withListActionBar()
                     ->withFilter([
                         $child[1] => $item->{$child[2]},
