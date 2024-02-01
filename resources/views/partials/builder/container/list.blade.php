@@ -1,9 +1,4 @@
 <!-- modulatte.partials.builder.container.list -->
-@php
-    use mmaurice\modulatte\Support\Helpers\ModuleHelper;
-    use mmaurice\modulatte\Support\Components\ActionElement;
-@endphp
-
 <div class="row">
     <div class="table-responsive">
         <table class="table data" cellpadding="1" cellspacing="1">
@@ -40,20 +35,7 @@
 
                         <td class="tableItem controls text-right">
                             @include ("{$namespace}::partials.actionBar", [
-                                'buttons' => collect([
-                                    ActionElement::build('Изменить', ModuleHelper::makeUrl(array_filter([
-                                        'tab' => $tab->slug(),
-                                        'method' => 'update',
-                                        'itemId' => $item->id,
-                                        'redirect' => $redirect,
-                                    ])), 'success btn-sm', 'edit'),
-                                    ActionElement::build('Удалить', ModuleHelper::makeUrl(array_filter([
-                                        'tab' => $tab->slug(),
-                                        'method' => 'delete',
-                                        'itemId' => $item->id,
-                                        'redirect' => $redirect,
-                                    ])), 'danger btn-sm', 'trash-o'),
-                                ]),
+                                'buttons' => $tab->controlBar($item),
                             ])
                         </td>
                     </tr>

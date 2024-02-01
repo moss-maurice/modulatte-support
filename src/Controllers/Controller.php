@@ -90,9 +90,9 @@ class Controller implements \mmaurice\modulatte\Support\Interfaces\ControllerInt
         return $this->name;
     }
 
-    public function actionBar(Collection $actions = null)
+    public function actionBar()
     {
-        return !is_null($actions) ? $actions : collect([]);
+        return collect();
     }
 
     public function index()

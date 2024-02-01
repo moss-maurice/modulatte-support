@@ -2,7 +2,7 @@
 
 namespace mmaurice\modulatte\Support\Controllers;
 
-use Illuminate\Support\Collection;
+use Illuminate\Database\Eloquent\Model;
 use mmaurice\modulatte\Support\Components\ActionElement;
 use mmaurice\modulatte\Support\Helpers\ModuleHelper;
 use mmaurice\modulatte\Support\Module;
@@ -15,6 +15,7 @@ abstract class CrudController extends \mmaurice\modulatte\Support\Controllers\Co
     protected $model;
     protected $pagination = 25;
     protected $filters = [];
+    protected $controlButtons = ['edit', 'delete'];
 
     public function __construct(Module $module)
     {
@@ -47,34 +48,64 @@ abstract class CrudController extends \mmaurice\modulatte\Support\Controllers\Co
         return $this;
     }
 
-    public function actionBar(Collection $actions = null)
+    public function actionBar()
     {
-        if (in_array($this->method(), ['index', 'list'])) {
-            $actions = collect([
-                ActionElement::build('Добавить', ModuleHelper::makeUrl([
+        $actions = collect();
+
+        switch ($this->method()) {
+            case 'index':
+            case 'list':
+                $actions->push(ActionElement::build('Добавить', ModuleHelper::makeUrl([
                     'tab' => $this->slug,
                     'method' => 'create',
                     'redirect' => $this->makeParentRedirect(),
-                ]), 'success', 'plus'),
-            ]);
-        }
+                ]), 'success', 'plus'));
 
-        if (in_array($this->method(), ['create', 'update'])) {
-            $actions = collect([
-                ActionElement::build('Сохранить', 'javascript:;', 'success', null, collect([
+                break;
+            case 'create':
+            case 'update':
+                $actions->push(ActionElement::build('Сохранить', 'javascript:;', 'success', null, collect([
                     'onclick' => "document.getElementById('{$this->module->slug()}').submit(); return false;",
-                ])),
-                ActionElement::build('Назад', $this->module->request()->input('redirect', ModuleHelper::makeUrl([
+                ])));
+
+                $actions->push(ActionElement::build('Назад', $this->module->request()->input('redirect', ModuleHelper::makeUrl([
                     'tab' => $this->module->tabName(),
                     'method' => $this->module->methodName(),
                     'itemId' => $this->module->itemId(),
                     'filter' => $this->module->filter(),
                     'order' => $this->module->order(),
-                ])), 'secondary'),
-            ]);
+                ])), 'secondary'));
+
+                break;
         }
 
-        return parent::actionBar($actions);
+        return $actions;
+    }
+
+    public function controlBar(Model $model)
+    {
+        return collect($this->controlButtons)
+            ->map(function ($item) use ($model) {
+                switch ($item) {
+                    case 'edit':
+                        return ActionElement::build('Изменить', ModuleHelper::makeUrl(array_filter([
+                            'tab' => $this->slug(),
+                            'method' => 'update',
+                            'itemId' => $model->id,
+                            'redirect' => $this->makeParentRedirect(),
+                        ])), 'success btn-sm', 'edit');
+                    case 'delete':
+                        return ActionElement::build('Удалить', ModuleHelper::makeUrl(array_filter([
+                            'tab' => $this->slug(),
+                            'method' => 'delete',
+                            'itemId' => $model->id,
+                            'redirect' => $this->makeParentRedirect(),
+                        ])), 'danger btn-sm', 'trash-o');
+                    default:
+                        return null;
+                }
+            })
+            ->filter();
     }
 
     public function index()
@@ -98,7 +129,6 @@ abstract class CrudController extends \mmaurice\modulatte\Support\Controllers\Co
                     'page' => $this->module->request()->input('page'),
                 ])),
             'message' => 'Ничего не найдено! Добавить?',
-            'redirect' => $this->makeParentRedirect(),
         ]);
     }
 

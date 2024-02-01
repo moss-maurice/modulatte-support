@@ -19,7 +19,7 @@ interface ControllerInterface
 
     public function hideTab();
 
-    public function actionBar(Collection $actions = null);
+    public function actionBar();
 
     public function index();
 }
