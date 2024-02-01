@@ -35,6 +35,11 @@ abstract class Module implements \mmaurice\modulatte\Support\Interfaces\ModuleIn
         return 9999;
     }
 
+    public function hideTabs()
+    {
+        return [];
+    }
+
     public function request()
     {
         return $this->request;
@@ -42,7 +47,9 @@ abstract class Module implements \mmaurice\modulatte\Support\Interfaces\ModuleIn
 
     public function tabName($default = null)
     {
-        return $this->request()->input('tab', is_null($default) ? $this->tabs()->first()->slug() : $default);
+        return $this->request()->input('tab', !is_null($default) ? $default : $this->tabs()->filter(function ($item) {
+            return in_array($item->slug(), $this->hideTabs()) ? false : true;
+        })->first()->slug());
     }
 
     public function methodName($default = 'index')
@@ -103,7 +110,7 @@ abstract class Module implements \mmaurice\modulatte\Support\Interfaces\ModuleIn
         return $path;
     }
 
-    public function tabs(bool $withHide = false)
+    public function tabs()
     {
         return $this->search('modules/' . ucfirst($this->slug()) . '/Controllers', '*Controller.php')
             ->map(function ($item) {
@@ -123,8 +130,8 @@ abstract class Module implements \mmaurice\modulatte\Support\Interfaces\ModuleIn
                     return null;
                 }
             })
-            ->filter(function ($item) use ($withHide) {
-                return !is_null($item) && ($withHide || !$item->hideTab()) ? true : false;
+            ->filter(function ($item) {
+                return !is_null($item) ? true : false;
             })
             ->sort(function ($left, $right) {
                 return $left->position() <=> $right->position();

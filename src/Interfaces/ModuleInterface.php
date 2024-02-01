@@ -14,6 +14,8 @@ interface ModuleInterface
 
     public function position();
 
+    public function hideTabs();
+
     public function request();
 
     public function tabName($default = 'main');
@@ -26,7 +28,7 @@ interface ModuleInterface
 
     public function order(array $default = []);
 
-    public function tabs(bool $withHide = false);
+    public function tabs();
 
     public function tab();
 
