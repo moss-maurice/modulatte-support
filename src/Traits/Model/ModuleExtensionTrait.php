@@ -59,6 +59,7 @@ trait ModuleExtensionTrait
         $rules = collect($this->filterRules());
 
         collect($this->filterFields())
+            ->merge(array_keys($fields))
             ->each(function ($item) use ($rules, $fields, &$query) {
                 if ($rules->isNotEmpty() and $rules->has($item)) {
                     $callback = $rules->get($item);
