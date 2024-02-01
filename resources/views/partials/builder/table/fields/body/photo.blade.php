@@ -1,4 +1,4 @@
-<!-- modulatte.partials.builder.table.fields.photo -->
+<!-- modulatte.partials.builder.table.fields.body.photo -->
 @php
     use Illuminate\Support\Facades\Storage;
 
@@ -15,4 +15,4 @@
         —
     @endif
 </td>
-<!-- / modulatte.partials.builder.table.fields.photo -->
+<!-- / modulatte.partials.builder.table.fields.body.photo -->

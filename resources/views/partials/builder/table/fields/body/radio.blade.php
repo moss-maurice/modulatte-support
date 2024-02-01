@@ -1,4 +1,4 @@
-<!-- modulatte.partials.builder.table.fields.bodyRadio -->
+<!-- modulatte.partials.builder.table.fields.body.radio -->
 @php
     $colspan = (isset($colspan) ? $colspan : 1);
     $rowspan = (isset($rowspan) ? $rowspan : 1);
@@ -13,4 +13,4 @@
         <div class="spinner-grow text-primary d-none" role="status"></div>
     </div>
 </td>
-<!-- modulatte.partials.builder.table.fields.bodyRadio -->
+<!-- modulatte.partials.builder.table.fields.body.radio -->

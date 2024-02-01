@@ -1,4 +1,4 @@
-<!-- modulatte.partials.builder.table.fields.head -->
+<!-- modulatte.partials.builder.table.fields.head.text -->
 @php
     $colspan = (isset($colspan) ? $colspan : 1);
     $rowspan = (isset($rowspan) ? $rowspan : 1);
@@ -19,4 +19,4 @@
         @endif
     @endif
 </th>
-<!-- / modulatte.partials.builder.table.fields.head -->
+<!-- / modulatte.partials.builder.table.fields.head.text -->

@@ -23,7 +23,7 @@
                         @endforeach
                     @endif
 
-                    @include ("{$namespace}::partials.builder.table.fields.headControl", [
+                    @include ("{$namespace}::partials.builder.table.fields.head.control", [
                         'name' => 'controls',
                         'class' => 'controls',
                     ])

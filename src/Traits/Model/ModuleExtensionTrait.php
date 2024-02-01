@@ -131,7 +131,7 @@ trait ModuleExtensionTrait
         }
 
         return collect([
-            'template' => 'partials.builder.table.fields.head',
+            'template' => 'partials.builder.table.fields.head.text',
             'attributes' => [
                 'name' => $name,
                 'title' => $this->mappedFieldName($name),
@@ -144,7 +144,7 @@ trait ModuleExtensionTrait
     public function getIdListHeadField()
     {
         return collect([
-            'template' => 'partials.builder.table.fields.head',
+            'template' => 'partials.builder.table.fields.head.text',
             'attributes' => [
                 'name' => 'id',
                 'title' => '#',
@@ -165,7 +165,7 @@ trait ModuleExtensionTrait
         }
 
         return collect([
-            'template' => 'partials.builder.table.fields.body',
+            'template' => 'partials.builder.table.fields.body.text',
             'attributes' => [
                 'name' => $name,
                 'value' => $this->mappedFieldValue($this->$name),
@@ -177,10 +177,10 @@ trait ModuleExtensionTrait
     public function getIdListField()
     {
         return collect([
-            'template' => 'partials.builder.table.fields.body',
+            'template' => 'partials.builder.table.fields.body.id',
             'attributes' => [
                 'name' => 'id',
-                'value' => ($this->id ? "{$this->id}." : '—'),
+                'value' => $this->mappedFieldValue($this->id),
                 'class' => $this->mappedListFieldClass('id', 'text-right'),
             ],
         ]);
