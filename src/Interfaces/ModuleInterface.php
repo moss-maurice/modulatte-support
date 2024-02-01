@@ -28,6 +28,8 @@ interface ModuleInterface
 
     public function order(array $default = []);
 
+    public function redirect($default = null);
+
     public function tabs();
 
     public function tab();

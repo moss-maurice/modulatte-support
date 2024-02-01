@@ -72,6 +72,11 @@ abstract class Module implements \mmaurice\modulatte\Support\Interfaces\ModuleIn
         return $this->request()->input('order', $default);
     }
 
+    public function redirect($default = null)
+    {
+        return $this->request()->input('redirect', $default);
+    }
+
     public function path($path = '')
     {
         $reflector = new ReflectionClass($this);

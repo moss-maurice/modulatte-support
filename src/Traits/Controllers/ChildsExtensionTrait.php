@@ -114,6 +114,7 @@ trait ChildsExtensionTrait
                 'itemId' => !is_null($this->parentItem()) ? $this->parentItem()->id : null,
                 'filter' => $this->module->filter(),
                 'order' => $this->module->order(),
+                'redirect' => $this->module->redirect(),
                 'page' => $this->module->request()->input('page'),
             ], $properties));
         }
