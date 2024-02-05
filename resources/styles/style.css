@@ -120,16 +120,20 @@ td.description {
     overflow: hidden;
 }
 
-.form-control.size-s {
+.form-control.size-s,
+.form-control.size-s ~ .tox.tox-tinymce {
     width: 25% !important;
 }
-.form-control.size-m {
+.form-control.size-m,
+.form-control.size-m ~ .tox.tox-tinymce {
     width: 50% !important;
 }
-.form-control.size-l {
+.form-control.size-l,
+.form-control.size-l ~ .tox.tox-tinymce {
     width: 75% !important;
 }
-.form-control.size-xl {
+.form-control.size-xl,
+.form-control.size-xl ~ .tox.tox-tinymce {
     width: 100% !important;
 }
 

@@ -8,7 +8,7 @@
     $class = (isset($class) ? " {$class}" : '');
 @endphp
 
-<textarea id="tinyMCE" class="form-control{{ $class }}" name="{{$name}}" cols="{{ $cols }}" rows="{{ $rows }}" wrap="soft" aria-hidden="true">{{ $value }}</textarea>
+<textarea id="tinyMCE" name="{{ $name }}" class="form-control{{ $class }}" cols="{{ $cols }}" rows="{{ $rows }}"{!! ($required ? ' required' : '') !!} wrap="soft" aria-hidden="true">{{ $value }}</textarea>
 
 <div class="form-text text-muted comment">{{ $comment }}</div>
 <!-- / modulatte.partials.builder.form.fields.inputTinyMCE -->
