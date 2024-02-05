@@ -1,6 +1,6 @@
 jQuery("document").ready(function () {
     tinymce.init({
-        selector: "textarea#tinyMCE",
+        selector: "textarea.tinyMCE",
     });
 
     jQuery("form").submit(function () {
