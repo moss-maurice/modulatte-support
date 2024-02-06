@@ -17,9 +17,29 @@ trait ModuleExtensionTrait
         return [];
     }
 
+    public function prependListFields()
+    {
+        return ['id'];
+    }
+
+    public function appendListFields()
+    {
+        return [];
+    }
+
     public function itemFields()
     {
         return [];
+    }
+
+    public function prependItemFields()
+    {
+        return ['id'];
+    }
+
+    public function appendItemFields()
+    {
+        return ['created_at', 'updated_at'];
     }
 
     public function filterFields()
@@ -187,6 +207,47 @@ trait ModuleExtensionTrait
         ]);
     }
 
+    public function getIdEditorField()
+    {
+        return collect([
+            'template' => 'partials.builder.form.fields.id',
+            'attributes' => [
+                'name' => 'id',
+                'title' => $this->mappedFieldName('id'),
+                'value' => $this->mappedFieldValue($this->id),
+                'comment' => '',
+            ],
+        ]);
+    }
+
+    public function getCreatedAtEditorField()
+    {
+        return collect([
+            'template' => 'partials.builder.form.fields.date',
+            'attributes' => [
+                'name' => 'created_at',
+                'title' => $this->mappedFieldName('created_at'),
+                'class' => $this->mappedListFieldClass('created_at'),
+                'value' => $this->mappedFieldValue($this->created_at),
+                'comment' => '',
+            ],
+        ]);
+    }
+
+    public function getUpdatedAtEditorField()
+    {
+        return collect([
+            'template' => 'partials.builder.form.fields.date',
+            'attributes' => [
+                'name' => 'updated_at',
+                'title' => $this->mappedFieldName('updated_at'),
+                'class' => $this->mappedListFieldClass('updated_at'),
+                'value' => $this->mappedFieldValue($this->updated_at),
+                'comment' => '',
+            ],
+        ]);
+    }
+
     public function getEditorField($name)
     {
         $name = ModuleHelper::camelCaseToUnderScore($name);
@@ -286,8 +347,9 @@ trait ModuleExtensionTrait
 
     public function mappedListFields()
     {
-        return collect($this->listFields())
-            ->prepend('id')
+        return collect($this->prependListFields())
+            ->merge($this->listFields())
+            ->merge($this->appendListFields())
             ->map(function ($name) {
                 return $this->mappedField($name);
             });
@@ -295,9 +357,12 @@ trait ModuleExtensionTrait
 
     public function mappedEditorFields()
     {
-        return collect($this->itemFields())->map(function ($name) {
-            return $this->mappedField($name);
-        });
+        return collect($this->prependItemFields())
+            ->merge($this->itemFields())
+            ->merge($this->appendItemFields())
+            ->map(function ($name) {
+                return $this->mappedField($name);
+            });
     }
 
     public function mappedFilterFields()
