@@ -111,7 +111,7 @@ trait ChildsExtensionTrait
                 'id' => $this->module->request()->input('id'),
                 'tab' => $this->parentController()->slug(),
                 'method' => $this->parentController()->method(),
-                'itemId' => !is_null($this->parentItem()) ? $this->parentItem()->id : null,
+                'itemId' => !is_null($this->parentItem()) ? $this->parentItem()->pk() : null,
                 'filter' => $this->module->filter(),
                 'order' => $this->module->order(),
                 'redirect' => $this->module->redirect(),

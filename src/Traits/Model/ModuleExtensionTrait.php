@@ -7,6 +7,11 @@ use mmaurice\modulatte\Support\Helpers\ModuleHelper;
 
 trait ModuleExtensionTrait
 {
+    public static function pkField()
+    {
+        return 'id';
+    }
+
     public function fieldsNames()
     {
         return [];
@@ -70,6 +75,13 @@ trait ModuleExtensionTrait
     public function filterRules()
     {
         return [];
+    }
+
+    public function pk()
+    {
+        $pkFieldName = static::pkField();
+
+        return $this->{$pkFieldName};
     }
 
     public function scopeFiltered($query, array $fields = [])

@@ -3,6 +3,7 @@
 namespace mmaurice\modulatte\Support\Controllers;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Collection;
 use mmaurice\modulatte\Support\Components\ActionElement;
 use mmaurice\modulatte\Support\Helpers\ModuleHelper;
 use mmaurice\modulatte\Support\Module;
@@ -50,36 +51,66 @@ abstract class CrudController extends \mmaurice\modulatte\Support\Controllers\Co
 
     public function actionBar()
     {
-        $actions = collect();
+        $actions = parent::actionBar();
 
         switch ($this->method()) {
             case 'index':
+                $actions = $this->actionBarIndex($actions);
+
+                break;
             case 'list':
-                $actions->push(ActionElement::build('Добавить', ModuleHelper::makeUrl([
-                    'tab' => $this->slug,
-                    'method' => 'create',
-                    'redirect' => $this->makeParentRedirect(),
-                ]), 'success', 'plus'));
+                $actions = $this->actionBarList($actions);
 
                 break;
             case 'create':
-            case 'update':
-                $actions->push(ActionElement::build('Сохранить', 'javascript:;', 'success', null, collect([
-                    'onclick' => "document.getElementById('{$this->module->slug()}').submit(); return false;",
-                ])));
+                $actions = $this->actionBarCreate($actions);
 
-                $actions->push(ActionElement::build('Назад', $this->module->request()->input('redirect', ModuleHelper::makeUrl([
-                    'tab' => $this->module->tabName(),
-                    'method' => $this->module->methodName(),
-                    'itemId' => $this->module->itemId(),
-                    'filter' => $this->module->filter(),
-                    'order' => $this->module->order(),
-                ])), 'secondary'));
+                break;
+            case 'update':
+                $actions = $this->actionBarUpdate($actions);
 
                 break;
         }
 
         return $actions;
+    }
+
+    public function actionBarIndex(Collection $actions)
+    {
+        $actions->push(ActionElement::build('Добавить', ModuleHelper::makeUrl([
+            'tab' => $this->slug,
+            'method' => 'create',
+            'redirect' => $this->makeParentRedirect(),
+        ]), 'success', 'plus'));
+
+        return $actions;
+    }
+
+    public function actionBarList(Collection $actions)
+    {
+        return $this->actionBarIndex($actions);
+    }
+
+    public function actionBarCreate(Collection $actions)
+    {
+        $actions->push(ActionElement::build('Сохранить', 'javascript:;', 'success', null, collect([
+            'onclick' => "document.getElementById('{$this->module->slug()}').submit(); return false;",
+        ])));
+
+        $actions->push(ActionElement::build('Назад', $this->module->request()->input('redirect', ModuleHelper::makeUrl([
+            'tab' => $this->module->tabName(),
+            'method' => $this->module->methodName(),
+            'itemId' => $this->module->itemId(),
+            'filter' => $this->module->filter(),
+            'order' => $this->module->order(),
+        ])), 'secondary'));
+
+        return $actions;
+    }
+
+    public function actionBarUpdate(Collection $actions)
+    {
+        return $this->actionBarCreate($actions);
     }
 
     public function controlBar(Model $model)
@@ -91,14 +122,14 @@ abstract class CrudController extends \mmaurice\modulatte\Support\Controllers\Co
                         return ActionElement::build('Изменить', ModuleHelper::makeUrl(array_filter([
                             'tab' => $this->slug(),
                             'method' => 'update',
-                            'itemId' => $model->id,
+                            'itemId' => $model->pk(),
                             'redirect' => $this->makeParentRedirect(),
                         ])), 'success btn-sm', 'edit');
                     case 'delete':
                         return ActionElement::build('Удалить', ModuleHelper::makeUrl(array_filter([
                             'tab' => $this->slug(),
                             'method' => 'delete',
-                            'itemId' => $model->id,
+                            'itemId' => $model->pk(),
                             'redirect' => $this->makeParentRedirect(),
                         ])), 'danger btn-sm', 'trash-o');
                     default:
@@ -140,7 +171,7 @@ abstract class CrudController extends \mmaurice\modulatte\Support\Controllers\Co
             return ModuleHelper::redirect([
                 'tab' => $this->slug,
                 'method' => 'update',
-                'itemId' => $item->id,
+                'itemId' => $item->pk(),
                 'redirect' => $this->module->request()->input('redirect'),
             ]);
         }
@@ -165,7 +196,8 @@ abstract class CrudController extends \mmaurice\modulatte\Support\Controllers\Co
             ]));
         }
 
-        $item = $this->model::find($itemId);
+        $item = $this->model::where($this->model::pkField(), $itemId)
+            ->first();
 
         if (!$item) {
             return $this->message('Маршрут с таким идентификатором не существует', collect([
@@ -199,7 +231,8 @@ abstract class CrudController extends \mmaurice\modulatte\Support\Controllers\Co
             ]));
         }
 
-        $item = $this->model::find($itemId);
+        $item = $this->model::where($this->model::pkField(), $itemId)
+            ->first();
 
         if (!$item) {
             return $this->message('Маршрут с таким идентификатором не существует', collect([
