@@ -119,24 +119,34 @@ abstract class CrudController extends \mmaurice\modulatte\Support\Controllers\Co
             ->map(function ($item) use ($model) {
                 switch ($item) {
                     case 'edit':
-                        return ActionElement::build('Изменить', ModuleHelper::makeUrl(array_filter([
-                            'tab' => $this->slug(),
-                            'method' => 'update',
-                            'itemId' => $model->pk(),
-                            'redirect' => $this->makeParentRedirect(),
-                        ])), 'success btn-sm', 'edit');
+                        return $this->controlBarEdit($model);
                     case 'delete':
-                        return ActionElement::build('Удалить', ModuleHelper::makeUrl(array_filter([
-                            'tab' => $this->slug(),
-                            'method' => 'delete',
-                            'itemId' => $model->pk(),
-                            'redirect' => $this->makeParentRedirect(),
-                        ])), 'danger btn-sm', 'trash-o');
+                        return $this->controlBarDelete($model);
                     default:
                         return null;
                 }
             })
             ->filter();
+    }
+
+    public function controlBarEdit(Model $model)
+    {
+        return ActionElement::build('Изменить', ModuleHelper::makeUrl(array_filter([
+            'tab' => $this->slug(),
+            'method' => 'update',
+            'itemId' => $model->pk(),
+            'redirect' => $this->makeParentRedirect(),
+        ])), 'success btn-sm', 'edit');
+    }
+
+    public function controlBarDelete(Model $model)
+    {
+        return ActionElement::build('Удалить', ModuleHelper::makeUrl(array_filter([
+            'tab' => $this->slug(),
+            'method' => 'delete',
+            'itemId' => $model->pk(),
+            'redirect' => $this->makeParentRedirect(),
+        ])), 'danger btn-sm', 'trash-o');
     }
 
     public function index()
