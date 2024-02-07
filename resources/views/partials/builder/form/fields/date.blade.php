@@ -7,8 +7,10 @@
 @endphp
 
 <strong>
-    @if (!empty($value))
+    @if (!empty($value) and ($value !== '—'))
         {{ Carbon::parse($value)->format('d.m.Y, H:i') }}
+    @else
+        {{ $value }}
     @endif
 </strong>
 
