@@ -86,8 +86,6 @@ trait ModuleExtensionTrait
 
     public function scopeFiltered($query, array $fields = [])
     {
-        $query = $query->published();
-
         $rules = collect($this->filterRules());
 
         collect($this->filterFields())
@@ -98,8 +96,7 @@ trait ModuleExtensionTrait
 
                     $query = call_user_func_array($callback, [$query]);
                 } else {
-                    $field = Request::capture()
-                        ->input("filter.{$item}", array_key_exists($item, $fields) ? $fields[$item] : null);
+                    $field = $this->requestedFieldValue("filter.{$item}", array_key_exists($item, $fields) ? $fields[$item] : null);
 
                     $query->when(!is_null($field) and !empty($field), function ($query) use ($item, $field) {
                         $query->where($item, $field);
@@ -349,7 +346,12 @@ trait ModuleExtensionTrait
 
     public function mappedFilterFieldValue($name, $default = null)
     {
-        return Request::capture()->input("filter.{$name}", $default);
+        return $this->requestedFieldValue("filter.{$name}", $default);
+    }
+
+    public function requestedFieldValue($name, $default = null)
+    {
+        return Request::capture()->input($name, $default);
     }
 
     public function mappedFieldsNames()
@@ -386,7 +388,7 @@ trait ModuleExtensionTrait
 
     public function mappedOrderFields()
     {
-        $fields = collect(Request::capture()->input('order'))
+        $fields = collect($this->requestedFieldValue("order"))
             ->filter();
 
         if ($fields->isEmpty()) {

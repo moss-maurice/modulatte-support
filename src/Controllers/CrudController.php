@@ -117,14 +117,13 @@ abstract class CrudController extends \mmaurice\modulatte\Support\Controllers\Co
     {
         return collect($this->controlButtons)
             ->map(function ($item) use ($model) {
-                switch ($item) {
-                    case 'edit':
-                        return $this->controlBarEdit($model);
-                    case 'delete':
-                        return $this->controlBarDelete($model);
-                    default:
-                        return null;
+                $methodName = "controlBar" . ucfirst($item);
+
+                if (method_exists($this, $methodName)) {
+                    return call_user_func_array([$this, $methodName], [$model]);
                 }
+
+                return null;
             })
             ->filter();
     }
