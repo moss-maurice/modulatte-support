@@ -53,23 +53,10 @@ abstract class CrudController extends \mmaurice\modulatte\Support\Controllers\Co
     {
         $actions = parent::actionBar();
 
-        switch ($this->method()) {
-            case 'index':
-                $actions = $this->actionBarIndex($actions);
+        $methodName = "actionBarIndex" . ucfirst($this->method());
 
-                break;
-            case 'list':
-                $actions = $this->actionBarList($actions);
-
-                break;
-            case 'create':
-                $actions = $this->actionBarCreate($actions);
-
-                break;
-            case 'update':
-                $actions = $this->actionBarUpdate($actions);
-
-                break;
+        if (method_exists($this, $methodName)) {
+            return call_user_func_array([$this, $methodName], [$actions]);
         }
 
         return $actions;
