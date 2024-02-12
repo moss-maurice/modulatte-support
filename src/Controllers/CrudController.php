@@ -53,7 +53,7 @@ abstract class CrudController extends \mmaurice\modulatte\Support\Controllers\Co
     {
         $actions = parent::actionBar();
 
-        $methodName = "actionBarIndex" . ucfirst($this->method());
+        $methodName = "actionBar" . ucfirst($this->method());
 
         if (method_exists($this, $methodName)) {
             return call_user_func_array([$this, $methodName], [$actions]);
