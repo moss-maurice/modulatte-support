@@ -7,7 +7,7 @@
 @extends ("{$namespace}::layouts.tab")
 
 <div class="">
-    @include ("{$namespace}::partials.builder.filter.fields.inputHidden", [
+    @include ("{$namespace}::partials.builder.form.fields.inputHidden", [
         'name' => 'method',
         'value' => 'index',
     ])

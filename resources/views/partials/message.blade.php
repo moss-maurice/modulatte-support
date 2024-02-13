@@ -9,7 +9,7 @@
 
 @if ($buttons and $buttons->isNotEmpty())
     <div class="d-flex pt-4 justify-content-center">
-        @include ("{$namespace}::partials.actionBar", [
+        @include ("{$namespace}::partials.actionBar.normal", [
             'buttons' => $buttons,
         ])
     </div>

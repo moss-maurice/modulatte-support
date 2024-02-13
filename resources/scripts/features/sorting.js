@@ -1,4 +1,4 @@
-jQuery("document").ready(function () {
+jQuery(document).ready(function () {
     jQuery(document).on("click", "table.table thead tr th.tableHeader .order", function (event) {
         if (jQuery(this).find("i.fa").length) {
             if (jQuery(this).find("i.fa").hasClass("fa-sort")) {

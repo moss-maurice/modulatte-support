@@ -6,7 +6,7 @@
 
 <th class="tableHeader {{ $name }} {{ $class }}" data-field="{{ $name }}"{{ ($colspan > 1 ? " colspan=\"{$colspan}\"" : '') }}{{ ($rowspan > 1 ? " rowspan=\"{$rowspan}\"" : '') }}>
     @if ($tab->listActionBar())
-        @include ("{$namespace}::partials.actionBar", [
+        @include ("{$namespace}::partials.actionBar.normal", [
             'buttons' => $tab->actionBar(),
         ])
     @endif

@@ -4,7 +4,7 @@
 ])
 
 @section ('actions')
-    @include ("{$namespace}::partials.actionBar", [
+    @include ("{$namespace}::partials.actionBar.normal", [
         'buttons' => $tab->actionBar(),
     ])
 @endsection

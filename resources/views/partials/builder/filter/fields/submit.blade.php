@@ -8,7 +8,7 @@
     <label>&nbsp;</label>
     <br />
     <button type="submit" class="btn btn-success btn-sm">
-        <i class="fa fa fa-search"></i>
+        <i class="fa fa fa-search pr-1"></i>
         <span>{{ $caption }}</span>
     </button>
 </div>

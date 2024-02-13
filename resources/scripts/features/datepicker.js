@@ -1,4 +1,4 @@
-jQuery("document").ready(function () {
+jQuery(document).ready(function () {
     var dpOffset = -10;
     var dpformat = "dd-mm-YYYY hh:mm:00";
     var dpdayNames = ["Воскресенье", "Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота"];

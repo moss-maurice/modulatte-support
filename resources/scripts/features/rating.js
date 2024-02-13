@@ -1,4 +1,4 @@
-jQuery("document").ready(function () {
+jQuery(document).ready(function () {
     jQuery("i.star").on("click", function () {
         let starWrapper = jQuery(".starWrapper");
         let starEmpty = "fa-star-o";

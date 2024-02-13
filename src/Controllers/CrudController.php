@@ -2,21 +2,26 @@
 
 namespace mmaurice\modulatte\Support\Controllers;
 
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Collection;
 use mmaurice\modulatte\Support\Components\ActionElement;
 use mmaurice\modulatte\Support\Helpers\ModuleHelper;
 use mmaurice\modulatte\Support\Module;
+use mmaurice\modulatte\Support\Traits\Controllers\ActionBarExtensionTrait;
+use mmaurice\modulatte\Support\Traits\Controllers\ActionsExtensionTrait;
 use mmaurice\modulatte\Support\Traits\Controllers\ChildsExtensionTrait;
+use mmaurice\modulatte\Support\Traits\Controllers\ControlBarExtensionTrait;
+use mmaurice\modulatte\Support\Traits\Controllers\GroupBarExtensionTrait;
 
 abstract class CrudController extends \mmaurice\modulatte\Support\Controllers\Controller implements \mmaurice\modulatte\Support\Interfaces\CrudControllerInterface
 {
+    use ActionBarExtensionTrait;
+    use ActionsExtensionTrait;
     use ChildsExtensionTrait;
+    use ControlBarExtensionTrait;
+    use GroupBarExtensionTrait;
 
     protected $model;
     protected $pagination = 25;
     protected $filters = [];
-    protected $controlButtons = ['edit', 'delete'];
 
     public function __construct(Module $module)
     {
@@ -49,92 +54,6 @@ abstract class CrudController extends \mmaurice\modulatte\Support\Controllers\Co
         return $this;
     }
 
-    public function actionBar()
-    {
-        $actions = parent::actionBar();
-
-        $methodName = "actionBar" . ucfirst($this->method());
-
-        if (method_exists($this, $methodName)) {
-            return call_user_func_array([$this, $methodName], [$actions]);
-        }
-
-        return $actions;
-    }
-
-    public function actionBarIndex(Collection $actions)
-    {
-        $actions->push(ActionElement::build('Добавить', ModuleHelper::makeUrl([
-            'tab' => $this->slug,
-            'method' => 'create',
-            'redirect' => $this->makeParentRedirect(),
-        ]), 'success', 'plus'));
-
-        return $actions;
-    }
-
-    public function actionBarList(Collection $actions)
-    {
-        return $this->actionBarIndex($actions);
-    }
-
-    public function actionBarCreate(Collection $actions)
-    {
-        $actions->push(ActionElement::build('Сохранить', 'javascript:;', 'success', null, collect([
-            'onclick' => "document.getElementById('{$this->module->slug()}').submit(); return false;",
-        ])));
-
-        $actions->push(ActionElement::build('Назад', $this->module->request()->input('redirect', ModuleHelper::makeUrl([
-            'tab' => $this->module->tabName(),
-            'method' => $this->module->methodName(),
-            'itemId' => $this->module->itemId(),
-            'filter' => $this->module->filter(),
-            'order' => $this->module->order(),
-        ])), 'secondary'));
-
-        return $actions;
-    }
-
-    public function actionBarUpdate(Collection $actions)
-    {
-        return $this->actionBarCreate($actions);
-    }
-
-    public function controlBar(Model $model)
-    {
-        return collect($this->controlButtons)
-            ->map(function ($item) use ($model) {
-                $methodName = "controlBar" . ucfirst($item);
-
-                if (method_exists($this, $methodName)) {
-                    return call_user_func_array([$this, $methodName], [$model]);
-                }
-
-                return null;
-            })
-            ->filter();
-    }
-
-    public function controlBarEdit(Model $model)
-    {
-        return ActionElement::build('Изменить', ModuleHelper::makeUrl(array_filter([
-            'tab' => $this->slug(),
-            'method' => 'update',
-            'itemId' => $model->pk(),
-            'redirect' => $this->makeParentRedirect(),
-        ])), 'success btn-sm', 'edit');
-    }
-
-    public function controlBarDelete(Model $model)
-    {
-        return ActionElement::build('Удалить', ModuleHelper::makeUrl(array_filter([
-            'tab' => $this->slug(),
-            'method' => 'delete',
-            'itemId' => $model->pk(),
-            'redirect' => $this->makeParentRedirect(),
-        ])), 'danger btn-sm', 'trash-o');
-    }
-
     public function index()
     {
         return $this->list();
@@ -143,18 +62,7 @@ abstract class CrudController extends \mmaurice\modulatte\Support\Controllers\Co
     public function list()
     {
         return $this->render('list', [
-            'list' => $this->model::filtered($this->filters)
-                ->ordered()
-                ->paginate($this->pagination())
-                //->withQueryString()
-                ->withPath(ModuleHelper::makeUrl([
-                    'tab' => $this->module->tabName(),
-                    'method' => $this->module->methodName(),
-                    'itemId' => $this->module->itemId(),
-                    'filter' => $this->module->filter(),
-                    'order' => $this->module->order(),
-                    'page' => $this->module->request()->input('page'),
-                ])),
+            'list' => $this->onList(),
             'message' => 'Ничего не найдено! Добавить?',
         ]);
     }
@@ -162,7 +70,7 @@ abstract class CrudController extends \mmaurice\modulatte\Support\Controllers\Co
     public function create()
     {
         if ($this->module->request()->isMethod('post')) {
-            $item = $this->model::create($this->module->request()->post());
+            $item = $this->onCreate();
 
             return ModuleHelper::redirect([
                 'tab' => $this->slug,
@@ -202,14 +110,41 @@ abstract class CrudController extends \mmaurice\modulatte\Support\Controllers\Co
         }
 
         if ($this->module->request()->isMethod('post')) {
-            $item->fill($this->module->request()->post())
-                ->save();
+            $item = $this->onUpdate($item);
         }
 
         return $this->render('update', [
             'item' => $item,
             'grids' => $this->getChilds($item),
         ]);
+    }
+
+    public function clone()
+    {
+        $redirect = $this->module->request()->input('redirect', ModuleHelper::makeUrl([
+            'tab' => $this->slug,
+        ]));
+
+        $itemId = $this->module->request()->input('itemId');
+
+        if (is_null($itemId)) {
+            return $this->message('Попытка запросить не существующую страницу. Пожалуйста, убедитесь, что вы верно передали аргументы запроса!', collect([
+                ActionElement::build('Назад', $redirect, 'secondary', 'angle-left'),
+            ]));
+        }
+
+        $item = $this->model::where($this->model::pkField(), $itemId)
+            ->first();
+
+        if (!$item) {
+            return $this->message('Маршрут с таким идентификатором не существует', collect([
+                ActionElement::build('Назад', $redirect, 'secondary', 'angle-left'),
+            ]));
+        }
+
+        $this->onClone($item);
+
+        return ModuleHelper::redirectUrl($redirect);
     }
 
     public function delete()
@@ -236,7 +171,7 @@ abstract class CrudController extends \mmaurice\modulatte\Support\Controllers\Co
             ]));
         }
 
-        $item->delete();
+        $this->onDelete($item);
 
         return ModuleHelper::redirectUrl($redirect);
     }

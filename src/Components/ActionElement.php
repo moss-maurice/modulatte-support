@@ -79,6 +79,16 @@ class ActionElement
         return ($this->hasProps() ? $this->props : collect([]));
     }
 
+    public function hasProp($name)
+    {
+        return ($this->getProps() && $this->getProps()->has($name) ? true : false);
+    }
+
+    public function getProp($name)
+    {
+        return ($this->hasProp($name) ? $this->getProps()->get($name) : null);
+    }
+
     public function getPropsToLine()
     {
         $line = '';
