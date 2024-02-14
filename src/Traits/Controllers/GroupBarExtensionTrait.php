@@ -7,7 +7,7 @@ use mmaurice\modulatte\Support\Helpers\ModuleHelper;
 
 trait GroupBarExtensionTrait
 {
-    protected $groupBar = ['delete'];
+    protected $groupBar = ['clone', 'delete'];
 
     public function groupBar()
     {

@@ -9,7 +9,7 @@
             <thead>
                 @if ($list->lastPage() > 1)
                     <tr class="paginator">
-                        <td class="tableHeader" colspan="{{ $columnsCount }}">
+                        <td class="tableHeader py-2" colspan="{{ $columnsCount }}">
                             @include ("{$namespace}::partials.pagination")
                         </td>
                     </tr>
@@ -17,7 +17,7 @@
 
                 @if ($tab->groupBar()->isNotEmpty())
                     <tr class="group-bar-controls text-center">
-                        <td class="tableHeader" colspan="{{ $columnsCount }}">
+                        <td class="tableHeader py-2" colspan="{{ $columnsCount }}">
                             @include ("{$namespace}::partials.groupBar")
                         </td>
                     </tr>
@@ -72,9 +72,17 @@
                 @endforeach
             </tbody>
             <tfoot>
+                @if ($tab->groupBar()->isNotEmpty())
+                    <tr class="group-bar-controls text-center">
+                        <td class="tableHeader py-2" colspan="{{ $columnsCount }}">
+                            @include ("{$namespace}::partials.groupBar")
+                        </td>
+                    </tr>
+                @endif
+
                 @if ($list->lastPage() > 1)
                     <tr class="paginator">
-                        <td class="tableHeader" colspan="{{ $columnsCount }}">
+                        <td class="tableHeader py-2" colspan="{{ $columnsCount }}">
                             @include ("{$namespace}::partials.pagination")
                         </td>
                     </tr>

@@ -8,7 +8,7 @@ use mmaurice\modulatte\Support\Helpers\ModuleHelper;
 
 trait ControlBarExtensionTrait
 {
-    protected $controlButtons = ['edit', 'delete'];
+    protected $controlButtons = ['edit', 'clone', 'delete'];
     protected $controlBarCompact = false;
 
     public function isControlBarCompact()
@@ -53,7 +53,7 @@ trait ControlBarExtensionTrait
 
     public function controlBarClone(Model $model)
     {
-        return ActionElement::build('Клонировать', ModuleHelper::makeUrl(array_filter([
+        return ActionElement::build('Копия', ModuleHelper::makeUrl(array_filter([
             'tab' => $this->slug(),
             'method' => 'clone',
             'itemId' => $model->pk(),

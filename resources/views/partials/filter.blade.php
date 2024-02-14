@@ -7,7 +7,7 @@
             @endforeach
 
             @include ("{$namespace}::partials.builder.filter.fields.submit", [
-                'class' => 'col-3',
+                'class' => 'col-1',
                 'caption' => 'Фильтровать',
             ])
         </div>

@@ -1,12 +1,12 @@
 <!-- modulatte.partials.actionBar.normal -->
 @if ($buttons and $buttons->isNotEmpty())
-    <div class="btn-group">
+    <div class="btn-group rounded">
         @foreach ($buttons as $index => $button)
             @if ($button->hasDropdown())
                 <div class="btn-group dropdown">
-                    <a id="Button{{ ($index + 1) }}" class="btn btn-{{ $button->getStyle() }} btn-sm" href="{{ $button->getTarget() }}"{!! $button->getPropsToLine() !!}>
+                    <a id="Button{{ ($index + 1) }}" class="btn btn-{{ $button->getStyle() }} btn-sm border-0" href="{{ $button->getTarget() }}"{!! $button->getPropsToLine() !!}>
                         @if ($button->hasIcon())
-                            <i class="{{ $button->getIcon() }} pr-1"></i>
+                            <i class="{{ $button->getIcon() }} pr-2"></i>
                         @endif
                         <span>{{ $button->getCaption() }}</span>
                     </a>
@@ -20,9 +20,9 @@
                     </select>
                 </div>
             @else
-                <a id="Button{{ ($index + 1) }}" class="btn btn-{{ $button->getStyle() }} btn-sm" href="{{ $button->getTarget() }}"{!! $button->getPropsToLine() !!}>
+                <a id="Button{{ ($index + 1) }}" class="btn btn-{{ $button->getStyle() }} btn-sm border-0 py-2 px-3" href="{{ $button->getTarget() }}"{!! $button->getPropsToLine() !!}>
                     @if ($button->hasIcon())
-                        <i class="{{ $button->getIcon() }} pr-1"></i>
+                        <i class="{{ $button->getIcon() }} pr-2"></i>
                     @endif
                     <span>{{ $button->getCaption() }}</span>
                 </a>
