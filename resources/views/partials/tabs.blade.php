@@ -15,9 +15,8 @@
             </script>
 
             @if ($currentTab->slug() === $module->tab()->slug())
-                {!! $currentTab->content() !!}
+                {!! $content !!}
             @endif
-
         </div>
     @endforeach
 @endif

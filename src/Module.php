@@ -182,6 +182,8 @@ abstract class Module implements \mmaurice\modulatte\Support\Interfaces\ModuleIn
 
     protected function render($template, array $properties = [])
     {
+        $content = $this->tab()->content();
+
         ob_start();
 
         include_once realpath(MODX_MANAGER_PATH . 'includes/header.inc.php');
@@ -190,6 +192,7 @@ abstract class Module implements \mmaurice\modulatte\Support\Interfaces\ModuleIn
             'modx' => EvolutionCMS(),
             'module' => $this,
             'tab' => $this->tab(),
+            'content' => $content,
         ], $properties));
 
         include_once realpath(MODX_MANAGER_PATH . 'includes/footer.inc.php');

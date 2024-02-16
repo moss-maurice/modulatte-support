@@ -104,7 +104,7 @@ abstract class CrudController extends \mmaurice\modulatte\Support\Controllers\Co
             ->first();
 
         if (!$item) {
-            return $this->message('Маршрут с таким идентификатором не существует', collect([
+            return $this->message('Запись с таким идентификатором не существует', collect([
                 ActionElement::build('Назад', $redirect, 'secondary', 'angle-left'),
             ]));
         }
@@ -137,7 +137,7 @@ abstract class CrudController extends \mmaurice\modulatte\Support\Controllers\Co
             ->first();
 
         if (!$item) {
-            return $this->message('Маршрут с таким идентификатором не существует', collect([
+            return $this->message('Запись с таким идентификатором не существует', collect([
                 ActionElement::build('Назад', $redirect, 'secondary', 'angle-left'),
             ]));
         }
@@ -166,7 +166,7 @@ abstract class CrudController extends \mmaurice\modulatte\Support\Controllers\Co
             ->first();
 
         if (!$item) {
-            return $this->message('Маршрут с таким идентификатором не существует', collect([
+            return $this->message('Запись с таким идентификатором не существует', collect([
                 ActionElement::build('Назад', $redirect, 'secondary', 'angle-left'),
             ]));
         }
