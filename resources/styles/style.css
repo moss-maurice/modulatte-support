@@ -164,7 +164,7 @@ td.description {
 }
 
 .form-control.DatePicker {
-    width: 100% !important;
+    width: 100%;
     padding: 4px 7px !important;
 }
 

@@ -63,7 +63,6 @@ abstract class CrudController extends \mmaurice\modulatte\Support\Controllers\Co
     {
         return $this->render('list', [
             'list' => $this->onList(),
-            'message' => 'Ничего не найдено! Добавить?',
         ]);
     }
 
@@ -73,7 +72,7 @@ abstract class CrudController extends \mmaurice\modulatte\Support\Controllers\Co
             $item = $this->onCreate();
 
             return ModuleHelper::redirect([
-                'tab' => $this->slug,
+                'tab' => $this->slug(),
                 'method' => 'update',
                 'itemId' => $item->pk(),
                 'redirect' => $this->module->request()->input('redirect'),
@@ -89,7 +88,7 @@ abstract class CrudController extends \mmaurice\modulatte\Support\Controllers\Co
     public function update()
     {
         $redirect = $this->module->request()->input('redirect', ModuleHelper::makeUrl([
-            'tab' => $this->slug,
+            'tab' => $this->slug(),
         ]));
 
         $itemId = $this->module->request()->input('itemId');
@@ -122,7 +121,7 @@ abstract class CrudController extends \mmaurice\modulatte\Support\Controllers\Co
     public function clone()
     {
         $redirect = $this->module->request()->input('redirect', ModuleHelper::makeUrl([
-            'tab' => $this->slug,
+            'tab' => $this->slug(),
         ]));
 
         $itemId = $this->module->request()->input('itemId');
@@ -150,7 +149,7 @@ abstract class CrudController extends \mmaurice\modulatte\Support\Controllers\Co
     public function delete()
     {
         $redirect = $this->module->request()->input('redirect', ModuleHelper::makeUrl([
-            'tab' => $this->slug,
+            'tab' => $this->slug(),
             'method' => 'list',
         ]));
 

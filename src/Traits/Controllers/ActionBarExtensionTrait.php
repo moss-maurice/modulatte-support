@@ -24,7 +24,7 @@ trait ActionBarExtensionTrait
     public function actionBarIndex(Collection $actions)
     {
         $actions->push(ActionElement::build('Добавить', ModuleHelper::makeUrl([
-            'tab' => $this->slug,
+            'tab' => $this->slug(),
             'method' => 'create',
             'redirect' => $this->makeParentRedirect(),
         ]), 'success', 'plus'));

@@ -49,7 +49,7 @@ trait GroupBarExtensionTrait
     public function groupClone()
     {
         $redirect = $this->module->request()->input('redirect', ModuleHelper::makeUrl([
-            'tab' => $this->slug,
+            'tab' => $this->slug(),
         ]));
 
         $this->onGroupClone();
@@ -60,7 +60,7 @@ trait GroupBarExtensionTrait
     public function groupDelete()
     {
         $redirect = $this->module->request()->input('redirect', ModuleHelper::makeUrl([
-            'tab' => $this->slug,
+            'tab' => $this->slug(),
         ]));
 
         $this->onGroupDelete();

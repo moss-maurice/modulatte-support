@@ -115,6 +115,11 @@ abstract class Module implements \mmaurice\modulatte\Support\Interfaces\ModuleIn
         return $path;
     }
 
+    /**
+     * Метод определения доступных для модуля табов
+     *
+     * @return Illuminate\Support\Collection
+     */
     public function tabs()
     {
         return $this->search('modules/' . ucfirst($this->slug()) . '/Controllers', '*Controller.php')
@@ -151,12 +156,15 @@ abstract class Module implements \mmaurice\modulatte\Support\Interfaces\ModuleIn
             ->pluck('item', 'slug');
     }
 
-    public function tab($tabName = null)
+    /**
+     * Метод получения сущности выбранного таба
+     *
+     * @param  string $tabName
+     *
+     * @return mmaurice\modulatte\Support\Interfaces\CrudControllerInterface|null
+     */
+    public function tab($tabName)
     {
-        if (is_null($tabName)) {
-            $tabName = $this->tabName();
-        }
-
         $tabs = $this->tabs(true);
 
         if ($tabs->has($tabName)) {
@@ -166,6 +174,26 @@ abstract class Module implements \mmaurice\modulatte\Support\Interfaces\ModuleIn
         return null;
     }
 
+    /**
+     * Метод получения сущности текущей активной вкладки
+     *
+     * @return mmaurice\modulatte\Support\Interfaces\CrudControllerInterface|null
+     */
+    public function currentTab()
+    {
+        $tabName = $this->tabName();
+
+        return $this->tab($tabName);
+    }
+
+    /**
+     * Метод определения доступных для модели контроллеров
+     *
+     * @param  string $path
+     * @param  string $mask
+     *
+     * @return Illuminate\Support\Collection
+     */
     protected function search($path, $mask)
     {
         $path = $this->path($path);
@@ -182,7 +210,7 @@ abstract class Module implements \mmaurice\modulatte\Support\Interfaces\ModuleIn
 
     protected function render($template, array $properties = [])
     {
-        $content = $this->tab()->content();
+        $content = $this->currentTab()->content();
 
         ob_start();
 
@@ -191,7 +219,7 @@ abstract class Module implements \mmaurice\modulatte\Support\Interfaces\ModuleIn
         echo $this->makeView($template, array_merge([
             'modx' => EvolutionCMS(),
             'module' => $this,
-            'tab' => $this->tab(),
+            'tab' => $this->currentTab(),
             'content' => $content,
         ], $properties));
 
@@ -209,7 +237,7 @@ abstract class Module implements \mmaurice\modulatte\Support\Interfaces\ModuleIn
         $data = !is_array($data) ? [] : $data;
 
         View::addNamespace('modulatte', $this->sourcePath('resources/views'));
-        View::addNamespace($this->slug(), $this->path("resources/views/{$this->slug()}/{$this->tab()->slug()}"));
+        View::addNamespace($this->slug(), $this->path("resources/views/{$this->slug()}/{$this->currentTab()->slug()}"));
 
         if (View::exists("{$this->slug()}::{$template}")) {
             return View::make("{$this->slug()}::{$template}", array_merge($data, [
@@ -231,14 +259,7 @@ abstract class Module implements \mmaurice\modulatte\Support\Interfaces\ModuleIn
     public function catch()
     {
         if ($this->request->input('id') === $this->id()) {
-            $this->render('main', [
-                /*'path' => ModuleHelper::makeUrl(collect($this->request()->all())
-                    ->merge([
-                        'tab' => $this->tabName(),
-                        'method' => $this->methodName(),
-                    ])
-                    ->filter()
-                    ->toArray()),*/]);
+            $this->render('main');
             return true;
         }
 

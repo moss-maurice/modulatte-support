@@ -7,11 +7,6 @@
 @extends ("{$namespace}::layouts.tab")
 
 <div class="">
-    @include ("{$namespace}::partials.builder.form.fields.inputHidden", [
-        'name' => 'method',
-        'value' => 'index',
-    ])
-
     @if ($tab->filterForm())
         @include("{$namespace}::partials.filter", [
             'fields' => collect($tab->model()->filterFields()),
@@ -25,7 +20,7 @@
         ])
     @else
         @include ("{$namespace}::partials.message", [
-            'message' => $message ? $message : 'Items is not found! Add new item?',
+            'message' => $message ? $message : 'Ничего не найдено! Добавить?',
             'messageType' => $tab::MESSAGE_DANGER,
             'buttons' => collect([
                 ActionElement::build('Добавить', ModuleHelper::makeUrl([

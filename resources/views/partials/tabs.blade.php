@@ -14,7 +14,7 @@
                 tpSettings.addTabPage(document.getElementById('tab_{{ $currentTab->slug() }}'));
             </script>
 
-            @if ($currentTab->slug() === $module->tab()->slug())
+            @if ($currentTab->slug() === $module->currentTab()->slug())
                 {!! $content !!}
             @endif
         </div>
@@ -25,7 +25,7 @@
     jQuery(document).ready(function() {
         // Открываем контент активного таба
         jQuery(document).find('h2').filter('.tab ').each(function(index, value) {
-            var dataTarget = '#tab_{{ $module->tab()->slug() }}';
+            var dataTarget = '#tab_{{ $module->currentTab()->slug() }}';
             var currentDataTarget = jQuery(this).attr('data-target');
             var tabPage = jQuery(document).find('.tab-page' + currentDataTarget);
 

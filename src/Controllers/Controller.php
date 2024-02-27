@@ -135,7 +135,7 @@ class Controller implements \mmaurice\modulatte\Support\Interfaces\ControllerInt
         } catch (Exception $exception) {
             return $this->message($exception->getMessage(), collect([
                 ActionElement::build('Назад', ModuleHelper::makeUrl([
-                    'tab' => $this->slug,
+                    'tab' => $this->slug(),
                 ]), 'secondary', 'angle-left'),
             ]));
         }

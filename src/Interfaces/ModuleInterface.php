@@ -32,7 +32,9 @@ interface ModuleInterface
 
     public function tabs();
 
-    public function tab();
+    public function tab($tabName);
+
+    public function currentTab();
 
     public function catch();
 }
