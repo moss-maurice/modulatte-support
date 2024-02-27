@@ -193,3 +193,7 @@ table.table thead tr th.tableHeader .order {
 .group-bar-controls .btn.inactive:hover {
     background-color: #e2e6ea !important;
 }
+
+#actions .btn-group .btn {
+    line-height: 1;
+}
