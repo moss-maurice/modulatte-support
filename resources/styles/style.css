@@ -132,9 +132,9 @@
 }
 .table.data .tableHeader.controls,
 .table.data .tableItem.controls {
-    width: 220px;
-    min-width: 220px;
-    max-width: 220px;
+    width: 350px;
+    min-width: 350px;
+    max-width: 350px;
     text-align: right;
     text-transform: initial !important;
 }
