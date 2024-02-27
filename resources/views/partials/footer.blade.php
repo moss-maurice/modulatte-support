@@ -9,6 +9,7 @@
 <script type="text/javascript" src="{{ $module->webSourcePath('resources/scripts/features/tinyMCE.js', ['v' => time()]) }}"></script>
 <script type="text/javascript" src="{{ $module->webSourcePath('resources/scripts/features/groupBar.js', ['v' => time()]) }}"></script>
 <script type="text/javascript" src="{{ $module->webSourcePath('resources/scripts/features/rating.js', ['v' => time()]) }}"></script>
+<script type="text/javascript" src="{{ $module->webSourcePath('resources/scripts/features/filtering.js', ['v' => time()]) }}"></script>
 <script type="text/javascript" src="{{ $module->webSourcePath('resources/scripts/features/sorting.js', ['v' => time()]) }}"></script>
 {{--<script type="text/javascript" src="{{ $module->webSourcePath('resources/scripts/features/datepicker.js', ['v' => time()]) }}"></script>--}}
 <script type="text/javascript" src="{{ $module->webSourcePath('resources/scripts/script.js', ['v' => time()]) }}"></script>

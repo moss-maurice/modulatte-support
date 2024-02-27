@@ -8,6 +8,7 @@
 
             @include ("{$namespace}::partials.builder.filter.fields.submit", [
                 'class' => 'col-1',
+                'name' => 'filter-run',
                 'caption' => 'Фильтровать',
             ])
         </div>

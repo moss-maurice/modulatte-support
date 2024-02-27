@@ -11,7 +11,7 @@ trait ActionsExtensionTrait
     {
         return $this->model::filtered($this->filters)
             ->ordered()
-            ->paginate($this->pagination())
+            ->paginate($this->pagination(), ['*'], 'page', in_array($this->model::getActor(), ['filter', 'order']) ? 1 : $this->module->request()->input('page', 1))
             //->withQueryString()
             ->withPath(ModuleHelper::makeUrl([
                 'tab' => $this->module->tabName(),

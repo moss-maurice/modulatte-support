@@ -7,6 +7,10 @@
 @extends ("{$namespace}::layouts.tab")
 
 <div class="">
+    @include ("{$namespace}::partials.builder.form.fields.inputHidden", [
+        'name' => 'actor',
+    ])
+
     @if ($tab->filterForm())
         @include("{$namespace}::partials.filter", [
             'fields' => collect($tab->model()->filterFields()),

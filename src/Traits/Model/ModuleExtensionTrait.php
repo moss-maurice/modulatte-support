@@ -84,6 +84,11 @@ trait ModuleExtensionTrait
         return $this->{$pkFieldName};
     }
 
+    public static function getActor()
+    {
+        return Request::capture()->input('actor');
+    }
+
     public function scopeFiltered($query, array $fields = [])
     {
         $rules = collect($this->filterRules());
