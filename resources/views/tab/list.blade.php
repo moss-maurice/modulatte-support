@@ -26,13 +26,7 @@
         @include ("{$namespace}::partials.message", [
             'message' => $message ? $message : 'Ничего не найдено! Добавить?',
             'messageType' => $messageType ? $messageType : $tab::MESSAGE_DANGER,
-            'buttons' => $buttons ? $buttons : collect([
-                ActionElement::build('Добавить', ModuleHelper::makeUrl([
-                    'tab' => $tab->slug(),
-                    'method' => 'create',
-                    'redirect' => $tab->makeParentRedirect(),
-                ]), 'success', 'plus'),
-            ]),
+            'buttons' => $buttons ? $buttons : $tab->actionBar(),
         ])
     @endif
 </div>
