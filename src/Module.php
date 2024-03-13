@@ -236,19 +236,24 @@ abstract class Module implements \mmaurice\modulatte\Support\Interfaces\ModuleIn
     {
         $data = !is_array($data) ? [] : $data;
 
-        View::addNamespace('modulatte', $this->sourcePath('resources/views'));
-        View::addNamespace($this->slug(), $this->path("resources/views/{$this->slug()}/{$this->currentTab()->slug()}"));
+        if ($moduleResourcePath = $this->path("resources/views/{$this->slug()}/{$this->currentTab()->slug()}")) {
+            View::addNamespace($this->slug(), $moduleResourcePath);
 
-        if (View::exists("{$this->slug()}::{$template}")) {
-            return View::make("{$this->slug()}::{$template}", array_merge($data, [
-                'namespace' => $this->slug(),
-            ]));
+            if (View::exists("{$this->slug()}::{$template}")) {
+                return View::make("{$this->slug()}::{$template}", array_merge($data, [
+                    'namespace' => $this->slug(),
+                ]));
+            }
         }
 
-        if (View::exists("modulatte::{$template}")) {
-            return View::make("modulatte::{$template}", array_merge($data, [
-                'namespace' => 'modulatte',
-            ]));
+        if ($basicResourcePath = $this->sourcePath('resources/views')) {
+            View::addNamespace('modulatte', $basicResourcePath);
+
+            if (View::exists("modulatte::{$template}")) {
+                return View::make("modulatte::{$template}", array_merge($data, [
+                    'namespace' => 'modulatte',
+                ]));
+            }
         }
 
         return View::make("modulatte::notfound", array_merge($data, [
