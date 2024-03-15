@@ -2,7 +2,7 @@
 @extends ("{$namespace}::layouts.tab")
 
 @include ("{$namespace}::partials.builder.container.update", [
-    'fields' => $tab->model()->mappedEditorFields(),
+    'fields' => $item->mappedEditorFields(),
 ])
 
 @include ("{$namespace}::partials.builder.container.update.grids")
