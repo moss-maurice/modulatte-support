@@ -48,23 +48,15 @@ trait GroupBarExtensionTrait
 
     public function groupClone()
     {
-        $redirect = $this->module->request()->input('redirect', ModuleHelper::makeUrl([
-            'tab' => $this->slug(),
-        ]));
-
         $this->onGroupClone();
 
-        return ModuleHelper::redirectUrl($redirect);
+        return ModuleHelper::redirectUrl($this->module->request()->getRequestUri());
     }
 
     public function groupDelete()
     {
-        $redirect = $this->module->request()->input('redirect', ModuleHelper::makeUrl([
-            'tab' => $this->slug(),
-        ]));
-
         $this->onGroupDelete();
 
-        return ModuleHelper::redirectUrl($redirect);
+        return ModuleHelper::redirectUrl($this->module->request()->getRequestUri());
     }
 }

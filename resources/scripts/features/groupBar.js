@@ -16,10 +16,11 @@ jQuery(document).ready(function () {
             if (!jQuery(this).hasClass("inactive")) {
                 jQuery(this)
                     .closest("form")
-                    .find("input")
-                    .filter("[type=hidden]")
-                    .filter("[name=method]")
-                    .val(jQuery(this).val());
+                    .append('<input type="hidden" name="tab" value="' + jQuery(this).attr("rel-tab") + '" />');
+
+                jQuery(this)
+                    .closest("form")
+                    .append('<input type="hidden" name="method" value="' + jQuery(this).val() + '" />');
 
                 jQuery(this).closest("form").submit();
             }
