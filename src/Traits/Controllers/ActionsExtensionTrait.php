@@ -23,6 +23,11 @@ trait ActionsExtensionTrait
             ]));
     }
 
+    protected function onItem($id)
+    {
+        return $this->model::find($id);
+    }
+
     protected function onCreate()
     {
         return $this->model::create($this->module->request()->post());

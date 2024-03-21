@@ -99,8 +99,7 @@ abstract class CrudController extends \mmaurice\modulatte\Support\Controllers\Co
             ]));
         }
 
-        $item = $this->model::where($this->model::pkField(), $itemId)
-            ->first();
+        $item = $this->onItem($itemId);
 
         if (!$item) {
             return $this->message('Запись с таким идентификатором не существует', collect([
@@ -110,6 +109,8 @@ abstract class CrudController extends \mmaurice\modulatte\Support\Controllers\Co
 
         if ($this->module->request()->isMethod('post')) {
             $item = $this->onUpdate($item);
+
+            return ModuleHelper::redirectUrl($this->module->request()->getRequestUri());
         }
 
         return $this->render('update', [
