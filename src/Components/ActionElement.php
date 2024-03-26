@@ -91,14 +91,11 @@ class ActionElement
 
     public function getPropsToLine()
     {
-        $line = '';
-
-        if ($this->hasProps()) {
-            foreach ($this->props->toArray() as $key => $value) {
-                $line .= " {$key}=\"{$value}\"";
-            }
-        }
-
-        return $line;
+        return $this->getProps()->map(function ($item, $key) {
+            return " {$key}=\"{$item}\"";
+        })
+            ->filter()
+            ->values()
+            ->implode('');
     }
 }

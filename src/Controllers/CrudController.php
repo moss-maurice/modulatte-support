@@ -9,6 +9,7 @@ use mmaurice\modulatte\Support\Traits\Controllers\ActionBarExtensionTrait;
 use mmaurice\modulatte\Support\Traits\Controllers\ActionsExtensionTrait;
 use mmaurice\modulatte\Support\Traits\Controllers\ChildsExtensionTrait;
 use mmaurice\modulatte\Support\Traits\Controllers\ControlBarExtensionTrait;
+use mmaurice\modulatte\Support\Traits\Controllers\FilterBarExtensionTrait;
 use mmaurice\modulatte\Support\Traits\Controllers\GroupBarExtensionTrait;
 
 abstract class CrudController extends \mmaurice\modulatte\Support\Controllers\Controller implements \mmaurice\modulatte\Support\Interfaces\CrudControllerInterface
@@ -17,6 +18,7 @@ abstract class CrudController extends \mmaurice\modulatte\Support\Controllers\Co
     use ActionsExtensionTrait;
     use ChildsExtensionTrait;
     use ControlBarExtensionTrait;
+    use FilterBarExtensionTrait;
     use GroupBarExtensionTrait;
 
     protected $model;

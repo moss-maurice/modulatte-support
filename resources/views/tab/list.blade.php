@@ -13,7 +13,8 @@
 
     @if ($tab->filterForm())
         @include("{$namespace}::partials.filter", [
-            'fields' => collect($tab->model()->filterFields()),
+            'fields' => $tab->filterBarFields(),
+            'buttons' => $tab->filterBarButtons(),
         ])
     @endif
 
