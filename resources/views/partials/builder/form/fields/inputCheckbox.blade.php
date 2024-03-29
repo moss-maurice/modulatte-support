@@ -2,7 +2,7 @@
 @php
     $required = (isset($required) ? $required : false);
     $label = (isset($label) ? $label : 'Да');
-    $for = "for" . ucfirst($name);
+    $for = "{$name}-checkbox";
 @endphp
 
 <input id="{{ $for }}" type="checkbox" name="{{ $name }}" value="1" @if ($value) checked @endif />
