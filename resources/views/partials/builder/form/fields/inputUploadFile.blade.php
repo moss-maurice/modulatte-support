@@ -5,14 +5,13 @@
     $height = (isset($height) ? intval($height) : 300);
     $value = (isset($value) ? $value : '');
     $comment = (isset($comment) ? $comment : '');
-    $for = "for" . ucfirst($name);
 @endphp
 
 @if ($value)
     <img src="{{Storage::disk('showplaces')->url($value)}}" alt="" style="max-width: {{ $width }}px; max-height: {{ $height }}px;" />
     <br />
-    <label for="{{ $for }}">Удалить это фото</label>
-    <input type="checkbox" value="1" name="deletePhoto" id="{{ $for }}" />
+    <label for="deletePhoto">Удалить это фото</label>
+    <input type="checkbox" value="1" name="deletePhoto" id="deletePhoto" />
     <hr />
 @endif
 

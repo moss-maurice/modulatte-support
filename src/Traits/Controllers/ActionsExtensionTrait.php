@@ -30,12 +30,26 @@ trait ActionsExtensionTrait
 
     protected function onCreate()
     {
-        return $this->model::create($this->module->request()->post());
+        $fields = collect($this->module->request()->post())
+            ->filter(function ($item) {
+                return !in_array($item, [0, '0', 'Нет']);
+            })
+            ->filter()
+            ->toArray();
+
+        return $this->model::create($fields);
     }
 
     protected function onUpdate(Model $item)
     {
-        $item->fill($this->module->request()->post())
+        $fields = collect($this->module->request()->post())
+            ->filter(function ($item) {
+                return !in_array($item, [0, '0', 'Нет']);
+            })
+            ->filter()
+            ->toArray();
+
+        $item->fill($fields)
             ->save();
 
         return $item;

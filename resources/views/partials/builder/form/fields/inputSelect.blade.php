@@ -12,7 +12,7 @@
 <div class="clearfix">
     <select class="form-control{{ $class }}" name="{{ $name }}" size="1"{{ $required }}{{ $disabled }}>
         @if ($noValue)
-            <option>Нет</option>
+            <option vlaue="0">Нет</option>
         @endif
 
         @if ($list and $list->isNotEmpty())
