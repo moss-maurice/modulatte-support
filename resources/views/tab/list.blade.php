@@ -25,9 +25,9 @@
         ])
     @else
         @include ("{$namespace}::partials.message", [
-            'message' => $message ? $message : 'Ничего не найдено! Добавить?',
-            'messageType' => $messageType ? $messageType : $tab::MESSAGE_DANGER,
-            'buttons' => $buttons ? $buttons : $tab->actionBar(),
+            'message' => isset($message) ? $message : 'Ничего не найдено! Добавить?',
+            'messageType' => isset($messageType) ? $messageType : $tab::MESSAGE_DANGER,
+            'buttons' => isset($buttons) ? $buttons : $tab->actionBar(),
         ])
     @endif
 </div>
