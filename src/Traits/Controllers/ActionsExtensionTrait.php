@@ -32,7 +32,7 @@ trait ActionsExtensionTrait
     {
         $fields = collect($this->module->request()->post())
             ->filter(function ($item) {
-                return !in_array($item, [0, '0', 'Нет']);
+                return in_array($item, [0, '0', 'Нет']);
             })
             ->filter()
             ->toArray();
@@ -44,7 +44,7 @@ trait ActionsExtensionTrait
     {
         $fields = collect($this->module->request()->post())
             ->filter(function ($item) {
-                return !in_array($item, [0, '0', 'Нет']);
+                return in_array($item, [0, '0', 'Нет']);
             })
             ->filter()
             ->toArray();
