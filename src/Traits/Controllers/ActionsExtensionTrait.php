@@ -34,8 +34,8 @@ trait ActionsExtensionTrait
             ->filter(function ($item, $key) {
                 return in_array($key, $this->model()->itemFields());
             })
-            ->map(function ($item, $key) {
-                return in_array($item, ['Нет'], true) ? null : trim($item);
+            ->map(function ($item) {
+                return in_array($item, ['Нет'], true) ? null : (is_string($item) ? trim($item) : $item);
             })
             ->toArray();
 
@@ -48,8 +48,8 @@ trait ActionsExtensionTrait
             ->filter(function ($item, $key) {
                 return in_array($key, $this->model()->itemFields());
             })
-            ->map(function ($item, $key) {
-                return in_array($item, ['Нет'], true) ? null : trim($item);
+            ->map(function ($item) {
+                return in_array($item, ['Нет'], true) ? null : (is_string($item) ? trim($item) : $item);
             })
             ->toArray();
 
