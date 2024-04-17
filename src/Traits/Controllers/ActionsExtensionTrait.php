@@ -31,10 +31,12 @@ trait ActionsExtensionTrait
     protected function onCreate()
     {
         $fields = collect($this->module->request()->post())
-            ->filter(function ($item) {
-                return in_array($item, [0, '0', 'Нет']);
+            ->filter(function ($item, $key) {
+                return in_array($key, $this->model()->itemFields());
             })
-            ->filter()
+            ->map(function ($item, $key) {
+                return in_array($item, ['Нет'], true) ? null : trim($item);
+            })
             ->toArray();
 
         return $this->model::create($fields);
@@ -43,10 +45,12 @@ trait ActionsExtensionTrait
     protected function onUpdate(Model $item)
     {
         $fields = collect($this->module->request()->post())
-            ->filter(function ($item) {
-                return in_array($item, [0, '0', 'Нет']);
+            ->filter(function ($item, $key) {
+                return in_array($key, $this->model()->itemFields());
             })
-            ->filter()
+            ->map(function ($item, $key) {
+                return in_array($item, ['Нет'], true) ? null : trim($item);
+            })
             ->toArray();
 
         $item->fill($fields)
