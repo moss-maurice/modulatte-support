@@ -7,7 +7,7 @@
 
 <th class="tableHeader {{ $name }} {{ $class }}" data-field="{{ $name }}"{{ ($colspan > 1 ? " colspan=\"{$colspan}\"" : '') }}{{ ($rowspan > 1 ? " rowspan=\"{$rowspan}\"" : '') }}>
     @if (!empty($title))
-        @if ($tab->orderForm())
+        @if ($tab->orderForm() and (!in_array($name, $tab->model()->orderIgnoreFields())))
             <span class="order">
                 {{ $title }}
                 <i class="fa fa-solid fa-sort{{ ($order !== 'asc' ? ($order !== 'desc' ? '' : '-down text-success') : '-up text-success') }}"></i>

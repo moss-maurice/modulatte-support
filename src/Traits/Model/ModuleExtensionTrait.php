@@ -57,6 +57,16 @@ trait ModuleExtensionTrait
         return [];
     }
 
+    public function orderIgnoreFields()
+    {
+        return [];
+    }
+
+    public function orderRules()
+    {
+        return [];
+    }
+
     public function listFieldsClasses()
     {
         return [];
@@ -116,10 +126,22 @@ trait ModuleExtensionTrait
     {
         $orders = $this->mappedOrderFields();
 
+        $rules = collect($this->orderRules());
+
         if ($orders->isNotEmpty()) {
-            $orders->each(function ($item, $key) use (&$query) {
-                if (in_array($item, ['asc', 'desc'])) {
-                    $query->orderBy($this->unmappedField($key), $item);
+            $orders->each(function ($item, $key) use ($rules, &$query) {
+                if (in_array($key, $this->orderIgnoreFields())) {
+                    return;
+                }
+
+                if ($rules->isNotEmpty() and $rules->has($key)) {
+                    $callback = $rules->get($key);
+
+                    $query = call_user_func_array($callback, [$query, $item]);
+                } else {
+                    if (in_array($item, ['asc', 'desc'])) {
+                        $query->orderBy($this->unmappedField($key), $item);
+                    }
                 }
             });
         }
