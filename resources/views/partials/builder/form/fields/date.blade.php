@@ -8,7 +8,7 @@
 
 <strong>
     @if (!empty($value) and ($value !== '—'))
-        {{ Carbon::parse($value)->format('d.m.Y, H:i') }}
+        {{ Carbon::parse($value, 'UTC')->tz('Europe/Moscow')->format('d.m.Y, H:i') }}
     @else
         {{ $value }}
     @endif
