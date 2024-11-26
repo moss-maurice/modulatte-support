@@ -56,6 +56,18 @@ trait ActionBarExtensionTrait
 
     public function actionBarUpdate(Collection $actions)
     {
-        return $this->actionBarCreate($actions);
+        $actions->push(ActionElement::build('Сохранить', 'javascript:;', 'success', null, collect([
+            'onclick' => "document.getElementById('{$this->module->slug()}').submit(); return false;",
+        ])));
+
+        $actions->push(ActionElement::build('Назад', $this->module->request()->input('redirect', ModuleHelper::makeUrl([
+            'tab' => $this->module->tabName(),
+            'method' => $this->module->methodName(),
+            'itemId' => $this->module->itemId(),
+            'filter' => $this->module->filter(),
+            'order' => $this->module->order(),
+        ])), 'secondary'));
+
+        return $actions;
     }
 }
