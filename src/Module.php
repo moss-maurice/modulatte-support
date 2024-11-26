@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\View;
 use ReflectionClass;
 use mmaurice\modulatte\Support\Controllers\Controller;
+use mmaurice\modulatte\Support\Exceptions\ModulatteException;
 
 abstract class Module implements \mmaurice\modulatte\Support\Interfaces\ModuleInterface
 {
@@ -171,7 +172,7 @@ abstract class Module implements \mmaurice\modulatte\Support\Interfaces\ModuleIn
             return $tabs->get($tabName);
         }
 
-        return null;
+        throw new ModulatteException("Tab '{$tabName}' not found");
     }
 
     /**

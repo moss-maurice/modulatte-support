@@ -2,9 +2,9 @@
 
 namespace mmaurice\modulatte\Support\Controllers;
 
-use Exception;
 use Illuminate\Support\Collection;
 use mmaurice\modulatte\Support\Components\ActionElement;
+use mmaurice\modulatte\Support\Exceptions\ModulatteException;
 use mmaurice\modulatte\Support\Helpers\ModuleHelper;
 use mmaurice\modulatte\Support\Module;
 
@@ -128,11 +128,11 @@ class Controller implements \mmaurice\modulatte\Support\Interfaces\ControllerInt
             $method = $this->method();
 
             if (!method_exists($this, $method)) {
-                throw new Exception("Запрошенный метод '{$method}' не найден");
+                throw new ModulatteException("Requested method '{$method}' not found");
             }
 
             return call_user_func([$this, $method]);
-        } catch (Exception $exception) {
+        } catch (ModulatteException $exception) {
             return $this->message($exception->getMessage(), collect([
                 ActionElement::build('Назад', ModuleHelper::makeUrl([
                     'tab' => $this->slug(),
