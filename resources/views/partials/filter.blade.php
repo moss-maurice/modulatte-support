@@ -8,7 +8,7 @@
 
             @if ($buttons and $buttons->isNotEmpty())
                 @foreach ($buttons as $index => $button)
-                    <div class="px-2 pt-3 col-1">
+                    <div class="px-2 pt-4 col-1">
                         <button type="submit" class="btn btn-{{ $button->getStyle() }} btn-sm styled border-0 rounded px-3 py-2"{!! $button->getPropsToLine() !!}>
                             @if ($button->hasIcon())
                                 <i class="{{ $button->getIcon() }} pr-2"></i>
