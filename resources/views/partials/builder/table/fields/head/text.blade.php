@@ -5,7 +5,7 @@
     $order = strtolower((isset($order) ? $order : 'none'));
 @endphp
 
-<th class="tableHeader {{ $name }} {{ $class }}" data-field="{{ $name }}"{{ ($colspan > 1 ? " colspan=\"{$colspan}\"" : '') }}{{ ($rowspan > 1 ? " rowspan=\"{$rowspan}\"" : '') }}>
+<th class="tableHeader align-middle {{ $name }} {{ $class }}" data-field="{{ $name }}"{{ ($colspan > 1 ? " colspan=\"{$colspan}\"" : '') }}{{ ($rowspan > 1 ? " rowspan=\"{$rowspan}\"" : '') }}>
     @if (!empty($title))
         @if ($tab->orderForm() and (!in_array($name, $tab->model()->orderIgnoreFields())))
             <span class="order">
