@@ -26,7 +26,7 @@
                 <tr>
                     @if ($tab->groupBar()->isNotEmpty())
                         @include ("{$namespace}::partials.builder.table.item", [
-                            'template' => 'partials.builder.table.fields.head.text',
+                            'template' => 'partials.builder.table.fields.head.groupBar',
                             'attributes' => [
                                 'name' => 'group-bar',
                                 'class' => 'short',
