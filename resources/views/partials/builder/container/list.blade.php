@@ -25,9 +25,13 @@
 
                 <tr>
                     @if ($tab->groupBar()->isNotEmpty())
-                        <td class="tableItem text-center short">
-                            <input type="checkbox" class="group-bar select-all" />
-                        </td>
+                        @include ("{$namespace}::partials.builder.table.item", [
+                            'template' => 'partials.builder.table.fields.head.text',
+                            'attributes' => [
+                                'name' => 'group-bar',
+                                'class' => 'short',
+                            ],
+                        ])
                     @endif
 
                     @if ($fields and $fields->isNotEmpty())
