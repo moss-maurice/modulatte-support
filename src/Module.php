@@ -129,7 +129,7 @@ abstract class Module implements \mmaurice\modulatte\Support\Interfaces\ModuleIn
                     $tabName = lcfirst($matches[1]);
 
                     if ($controllerPath = $this->path('modules/' . ucfirst($this->slug()) . '/Controllers/' . ucfirst($tabName) . 'Controller.php')) {
-                        $className = "\\Modulatte\\Module\\" . ucfirst($this->slug()) . "\\Controllers\\" . ucfirst($tabName) . "Controller";
+                        $className = preg_replace('/^(.+)\\\\' . ucfirst($this->slug()) . '\\\\Module$/imu', '$1', get_called_class()) . "\\" . ucfirst($this->slug()) . "\\Controllers\\" . ucfirst($tabName) . "Controller";
 
                         $controller = new $className($this);
 
