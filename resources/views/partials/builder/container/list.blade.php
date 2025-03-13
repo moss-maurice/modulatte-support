@@ -50,7 +50,7 @@
                 @foreach ($list as $item)
                     <tr>
                         @if ($tab->groupBar()->isNotEmpty())
-                            <td class="tableItem text-center short">
+                            <td class="tableItem text-left short">
                                 <input type="checkbox" name="group[]" class="group-bar select-item" value="{{ $item->pk() }}" />
                             </td>
                         @endif
