@@ -4,7 +4,7 @@
     $rowspan = (isset($rowspan) ? $rowspan : 1);
 @endphp
 
-<th class="tableHeader align-middle {{ $name }} {{ $class }}" data-field="{{ $name }}"{{ ($colspan > 1 ? " colspan=\"{$colspan}\"" : '') }}{{ ($rowspan > 1 ? " rowspan=\"{$rowspan}\"" : '') }}>
+<th class="tableHeader align-end text-right {{ $name }} {{ $class }}" data-field="{{ $name }}"{{ ($colspan > 1 ? " colspan=\"{$colspan}\"" : '') }}{{ ($rowspan > 1 ? " rowspan=\"{$rowspan}\"" : '') }}>
     @if ($tab->listActionBar())
         @include ("{$namespace}::partials.actionBar.normal", [
             'buttons' => $tab->actionBar(),
