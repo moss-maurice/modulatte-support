@@ -1,4 +1,4 @@
-<!-- modulatte.partials.builder.table.fields.body.text -->
+<!-- modulatte.partials.builder.table.fields.body.price -->
 @php
     $colspan = (isset($colspan) ? $colspan : 1);
     $rowspan = (isset($rowspan) ? $rowspan : 1);
@@ -6,11 +6,17 @@
     $decimals  = (isset($decimals ) ? $decimals : 2);
     $decimalSeparator = (isset($decimalSeparator ) ? $decimalSeparator : '.');
     $thousandsSeparator  = (isset($thousandsSeparator ) ? $thousandsSeparator : ' ');
-    $symbolBefore = (isset($symbolBefore ) ? $symbolBefore : true);
-    $value = (!is_null($value) && ($value !== '') ? trim(($symbolBefore ? "{$symbol} " : "") . number_format($value, $decimals , $decimalSeparator, $thousandsSeparator) . (!$symbolBefore ? " {$symbol}" : "")) : '—');
 @endphp
 
-<td class="tableItem {{ $name }} {{ $class }}" data-field="{{ $name }}"{{ ($colspan > 1 ? " colspan=\"{$colspan}\"" : '') }}{{ ($rowspan > 1 ? " rowspan=\"{$rowspan}\"" : '') }}>
-    {!! $value !!}
-</td>
-<!-- / modulatte.partials.builder.table.fields.body.text -->
+@include ("{$namespace}::partials.builder.table.fields.body.numFormat", [
+    'name' => $name,
+    'class' => $class,
+    'value' => $value,
+    'leftSymbol' => $symbol,
+    'decimals' => $decimals,
+    'decimalSeparator' => $decimalSeparator,
+    'thousandsSeparator' => $thousandsSeparator,
+    'colspan' => $colspan,
+    'rowspan' => $rowspan,
+])
+<!-- / modulatte.partials.builder.table.fields.body.price -->
