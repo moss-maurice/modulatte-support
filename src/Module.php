@@ -237,7 +237,7 @@ abstract class Module implements \mmaurice\modulatte\Support\Interfaces\ModuleIn
     {
         $data = !is_array($data) ? [] : $data;
 
-        if ($moduleResourcePath = $this->path("resources/views/{$this->slug()}/{$this->currentTab()->slug()}")) {
+        if ($moduleResourcePath = $this->path("resources/views")) {
             View::addNamespace($this->slug(), $moduleResourcePath);
 
             if (View::exists("{$this->slug()}::{$template}")) {

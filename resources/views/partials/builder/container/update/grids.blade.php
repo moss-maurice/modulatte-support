@@ -5,7 +5,7 @@
 
         <h3 class="pt-4 pb-4 font-weight-bold text-center">{{ $grid->name() }}</h3>
 
-        {!! $grid->content('list') !!}
+        {!! $grid->content('index') !!}
     @endforeach
 @endif
 <!-- / modulatte.partials.builder.container.update.grids -->

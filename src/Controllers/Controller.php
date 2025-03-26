@@ -150,7 +150,7 @@ class Controller implements \mmaurice\modulatte\Support\Interfaces\ControllerInt
         $templateName = str_replace('.', '/', $tabResource->get('template'));
 
         if ($this->module->path("resources/views/{$this->module->slug()}/{$this->slug()}/{$templateName}.blade.php")) {
-            $blade = $tabResource->get('template');
+            $blade = "{$this->module->slug()}.{$this->slug()}.{$templateName}";
         }
 
         $data = array_merge($tabResource->get('data', []), [
