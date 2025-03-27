@@ -266,6 +266,7 @@ abstract class Module implements \mmaurice\modulatte\Support\Interfaces\ModuleIn
     {
         if ($this->request->input('id') === $this->id()) {
             $this->render('main');
+
             return true;
         }
 
