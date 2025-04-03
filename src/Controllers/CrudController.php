@@ -73,6 +73,10 @@ abstract class CrudController extends \mmaurice\modulatte\Support\Controllers\Co
         if ($this->module->request()->isMethod('post')) {
             $item = $this->onCreate();
 
+            if (!($item instanceof $this->model)) {
+                return $item;
+            }
+
             return ModuleHelper::redirect([
                 'tab' => $this->slug(),
                 'method' => 'update',
@@ -103,14 +107,16 @@ abstract class CrudController extends \mmaurice\modulatte\Support\Controllers\Co
 
         $item = $this->onItem($itemId);
 
-        if (!$item) {
-            return $this->message('Запись с таким идентификатором не существует', collect([
-                ActionElement::build('Назад', $redirect, 'secondary', 'angle-left'),
-            ]));
+        if (!($item instanceof $this->model)) {
+            return $item;
         }
 
         if ($this->module->request()->isMethod('post')) {
             $item = $this->onUpdate($item);
+
+            if (!($item instanceof $this->model)) {
+                return $item;
+            }
 
             return ModuleHelper::redirectUrl($this->module->request()->getRequestUri());
         }

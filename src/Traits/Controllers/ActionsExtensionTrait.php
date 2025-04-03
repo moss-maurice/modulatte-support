@@ -3,6 +3,7 @@
 namespace mmaurice\modulatte\Support\Traits\Controllers;
 
 use Illuminate\Database\Eloquent\Model;
+use mmaurice\modulatte\Support\Components\ActionElement;
 use mmaurice\modulatte\Support\Helpers\ModuleHelper;
 
 trait ActionsExtensionTrait
@@ -25,7 +26,19 @@ trait ActionsExtensionTrait
 
     protected function onItem($id)
     {
-        return $this->model::find($id);
+        $redirect = $this->module->request()->input('redirect', ModuleHelper::makeUrl([
+            'tab' => $this->slug(),
+        ]));
+
+        $item = $this->model::find($id);
+
+        if (!$item) {
+            return $this->message('Запись с таким идентификатором не существует', collect([
+                ActionElement::build('Назад', $redirect, 'secondary', 'angle-left'),
+            ]));
+        }
+
+        return $item;
     }
 
     protected function onCreate()
